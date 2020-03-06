@@ -1,9 +1,6 @@
 #!/bin/python3
 
 
-import sys
-# Temporary dev path
-sys.path.append("/home/matt/pythfinder")
 import pythfinder as pf
 import json
 from flask import Flask, abort, request
