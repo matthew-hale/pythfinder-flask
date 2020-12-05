@@ -5,7 +5,7 @@ import pythfinder as pf
 import json
 from flask import Flask, abort, request
 
-with open("/home/matt/pythfinder/test.json") as f:
+with open("$HOME/pythfinder-flask/samuel.json") as f:
     c = pf.Character(json.load(f))
 
 app = Flask(__name__)

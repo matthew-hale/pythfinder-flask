@@ -1,0 +1,917 @@
+{
+    "name": "Samuel Ironwillow",
+    "race": "Human",
+    "deity": "",
+    "homeland": "",
+    "CMB": 0,
+    "CMD": 0,
+    "initiativeMods": [
+        0
+    ],
+    "alignment": "LN",
+    "description": "Sam is decently tall, and slightly bulky. He's bald (by choice, he swears), and sports a moustache; he resembles an old-time strongman in this way. He has brown hair (above his lip, at least) and brown eyes.",
+    "height": "5'11\"",
+    "weight": 160,
+    "size": "M",
+    "age": 27,
+    "hair": "brown",
+    "eyes": "brown",
+    "languages": [
+        "Common",
+        "Dwarven",
+        "Halfling"
+    ],
+    "spellsPerDay": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0
+    },
+    "baseAttackBonus": 4,
+    "gold": 232.36,
+    "AC": [],
+    "speed": {
+        "base": 30,
+        "armor": 0,
+        "fly": 0,
+        "swim": 0,
+        "climb": 0,
+        "burrow": 0
+    },
+    "classes": [
+        {
+            "name": "Fighter",
+            "archetypes": [
+                "Brawler"
+            ],
+            "level": 4
+        },
+        {
+            "name": "Wizard",
+            "archetypes": [
+                "test",
+                "test2"
+            ],
+            "level": 1
+        },
+        {
+            "name": "Sorcerer",
+            "archetypes": [
+                "test"
+            ],
+            "level": 2
+        }
+    ],
+    "abilities": {
+        "str": {
+            "base": 16,
+            "misc": []
+        },
+        "dex": {
+            "base": 14,
+            "misc": []
+        },
+        "con": {
+            "base": 12,
+            "misc": []
+        },
+        "int": {
+            "base": 14,
+            "misc": []
+        },
+        "wis": {
+            "base": 8,
+            "misc": [
+                2
+            ]
+        },
+        "cha": {
+            "base": 12,
+            "misc": []
+        }
+    },
+    "hp": {
+        "max": 37,
+        "current": -4,
+        "temporary": 0,
+        "nonlethal": 0
+    },
+    "special": [
+        {
+            "name": "Bravery",
+            "description": "+1 to Will saves vs fear",
+            "notes": ""
+        },
+        {
+            "name": "Close Control",
+            "description": "At 2nd level, a brawler becomes skilled at forcefully moving his opponent around the battlefield. The brawler gains a +1 bonus on bull rush, drag, and reposition combat maneuver checks. The brawler also gains a +1 bonus to CMD when attacked with the bull rush, drag, and reposition maneuvers. These bonuses increase by +1 for every four levels after 2nd (to a maximum of +5 at 18th level). ",
+            "notes": ""
+        },
+        {
+            "name": "Close Combatant",
+            "description": "At 3rd level, a brawler gains a +1 bonus on attack rolls and a +3 bonus on damage rolls with weapons in the close weapon group. Both of these bonuses increase by +1 for every four levels beyond 3rd (to a maximum of +5 on attack rolls and +7 on damage rolls at 19th level).",
+            "notes": "(bonuses applied to current attacks)"
+        }
+    ],
+    "traits": [
+        {
+            "name": "No Escape",
+            "description": "+1 to CMB checks to restrain witnessed lawbreakers",
+            "notes": ""
+        },
+        {
+            "name": "Honeyed Tongue",
+            "description": "+1 to diplomacy checks (applied); diplomacy becomes a class skill",
+            "notes": ""
+        }
+    ],
+    "feats": [
+        {
+            "name": "Fast Learner",
+            "description": "Get both +1 HP and +1 skill point on leveling",
+            "notes": ""
+        },
+        {
+            "name": "Cunning",
+            "description": "+1 skill point per level",
+            "notes": ""
+        },
+        {
+            "name": "Combat Reflexes",
+            "description": "You may make a number of additional attacks of opportunity per round equal to your Dexterity bonus. With this feat, you may also make attacks of opportunity while flat-footed.",
+            "notes": ""
+        },
+        {
+            "name": "Enforcer",
+            "description": "Whenever you deal nonlethal damage with a melee weapon, you can make an Intimidate check to demoralize your target as a free action. If you are successful, the target is shaken for a number of rounds equal to the damage dealt. If your attack was a critical hit, your target is frightened for 1 round with a successful Intimidate check, as well as being shaken for a number of rounds equal to the damage dealt.",
+            "notes": ""
+        },
+        {
+            "name": "Alertness",
+            "description": "+2 to Perception and Sense Motive checks (applied)",
+            "notes": "If you have 10 or more ranks in one of these skills, the bonus increases to +4 for that skill."
+        },
+        {
+            "name": "Uncanny Alertness",
+            "description": "+1 to Perception and Sense Motive checks (applied), and +2 to saving throws against sleep effects",
+            "notes": ""
+        },
+        {
+            "name": "Power Attack",
+            "description": "You can choose to take a \u20131 penalty on all melee attack rolls and combat maneuver checks to gain a +2 bonus on all melee damage rolls. This bonus to damage is increased by half (+50%) if you are making an attack with a two-handed weapon, a one handed weapon using two hands, or a primary natural weapon that adds 1-1/2 times your Strength modifier on damage rolls. This bonus to damage is halved (\u201350%) if you are making an attack with an off-hand weapon or secondary natural weapon.",
+            "notes": "When your base attack bonus reaches +4, and every 4 points thereafter, the penalty increases by \u20131 and the bonus to damage increases by +2."
+        }
+    ],
+    "equipment": [
+        {
+            "name": "Potion, cure moderate wounds",
+            "weight": 0.1,
+            "count": 2,
+            "camp": false,
+            "on_person": true,
+            "location": "backpack",
+            "notes": ""
+        },
+        {
+            "name": "Meat, kikimao",
+            "weight": 1,
+            "count": 55,
+            "camp": true,
+            "on_person": false,
+            "location": "",
+            "notes": ""
+        },
+        {
+            "name": "Oil, lamp",
+            "weight": 1,
+            "count": 8,
+            "camp": false,
+            "on_person": true,
+            "location": "backpack",
+            "notes": "6 hours of light in a lantern"
+        },
+        {
+            "name": "Lantern, bullseye",
+            "weight": 3,
+            "count": 1,
+            "camp": false,
+            "on_person": true,
+            "location": "backpack",
+            "notes": "60 ft normal light in a cone, +1 light level beyond in 120 ft cone"
+        },
+        {
+            "name": "Compass",
+            "weight": 0.5,
+            "count": 1,
+            "camp": false,
+            "on_person": true,
+            "location": "backpack",
+            "notes": "+2 circumstance to survival to avoid getting lost (Knowledge dungeoneering if underground)"
+        },
+        {
+            "name": "Newspaper",
+            "weight": 0,
+            "count": 1,
+            "camp": false,
+            "on_person": true,
+            "location": "backpack",
+            "notes": "Issue number 12"
+        },
+        {
+            "name": "Tea, Black",
+            "weight": 0,
+            "count": 5,
+            "camp": false,
+            "on_person": true,
+            "location": "backpack",
+            "notes": "cost 42 gold for 12 servings, 3.5 gold per serving"
+        },
+        {
+            "name": "Bedroll",
+            "weight": 5,
+            "count": 1,
+            "camp": true,
+            "on_person": true,
+            "location": "backpack",
+            "notes": ""
+        },
+        {
+            "name": "Pot, Iron",
+            "weight": 4,
+            "count": 1,
+            "camp": true,
+            "on_person": true,
+            "location": "backpack",
+            "notes": ""
+        },
+        {
+            "name": "Kit, Mess",
+            "weight": 1,
+            "count": 1,
+            "camp": true,
+            "on_person": true,
+            "location": "backpack",
+            "notes": ""
+        },
+        {
+            "name": "Soap",
+            "weight": 0.5,
+            "count": 1,
+            "camp": true,
+            "on_person": true,
+            "location": "backpack",
+            "notes": ""
+        },
+        {
+            "name": "Rations, trail",
+            "weight": 1,
+            "count": 4,
+            "camp": true,
+            "on_person": true,
+            "location": "backpack",
+            "notes": ""
+        },
+        {
+            "name": "Tent, small",
+            "weight": 20,
+            "count": 1,
+            "camp": true,
+            "on_person": true,
+            "location": "backpack",
+            "notes": ""
+        },
+        {
+            "name": "Tools, Artisan",
+            "weight": 5,
+            "count": 1,
+            "camp": true,
+            "on_person": true,
+            "location": "backpack",
+            "notes": ""
+        },
+        {
+            "name": "Chair, folding",
+            "weight": 10,
+            "count": 1,
+            "camp": true,
+            "on_person": true,
+            "location": "backpack",
+            "notes": ""
+        },
+        {
+            "name": "Sap",
+            "weight": 2,
+            "count": 1,
+            "camp": false,
+            "on_person": true,
+            "location": "belt",
+            "notes": ""
+        },
+        {
+            "name": "Weapon cord",
+            "weight": 0,
+            "count": 1,
+            "camp": false,
+            "on_person": true,
+            "location": "sap",
+            "notes": "attached to sap"
+        },
+        {
+            "name": "Piton",
+            "weight": 0.1,
+            "count": 6,
+            "camp": false,
+            "on_person": true,
+            "location": "belt pouch",
+            "notes": ""
+        },
+        {
+            "name": "Backpack",
+            "weight": 2,
+            "count": 1,
+            "camp": false,
+            "on_person": true,
+            "location": "",
+            "notes": ""
+        },
+        {
+            "name": "Pouch, Belt",
+            "weight": 0.5,
+            "count": 1,
+            "camp": false,
+            "on_person": true,
+            "location": "belt",
+            "notes": ""
+        },
+        {
+            "name": "Flint and steel",
+            "weight": 0,
+            "count": 1,
+            "camp": false,
+            "on_person": true,
+            "location": "belt pouch",
+            "notes": ""
+        },
+        {
+            "name": "Rope, Hemp 50ft",
+            "weight": 10,
+            "count": 1,
+            "camp": false,
+            "on_person": true,
+            "location": "backpack",
+            "notes": ""
+        },
+        {
+            "name": "Torch",
+            "weight": 1,
+            "count": 10,
+            "camp": false,
+            "on_person": true,
+            "location": "backpack",
+            "notes": ""
+        },
+        {
+            "name": "Waterskin",
+            "weight": 0,
+            "count": 1,
+            "camp": false,
+            "on_person": true,
+            "location": "belt",
+            "notes": ""
+        },
+        {
+            "name": "Earplugs",
+            "weight": 0,
+            "count": 1,
+            "camp": false,
+            "on_person": true,
+            "location": "belt pouch",
+            "notes": ""
+        },
+        {
+            "name": "Candle",
+            "weight": 0,
+            "count": 10,
+            "camp": false,
+            "on_person": true,
+            "location": "backpack",
+            "notes": ""
+        },
+        {
+            "name": "Tindertwig",
+            "weight": 0,
+            "count": 5,
+            "camp": false,
+            "on_person": true,
+            "location": "belt pouch",
+            "notes": ""
+        },
+        {
+            "name": "Outfit, Cold Weather",
+            "weight": 7,
+            "count": 1,
+            "camp": false,
+            "on_person": true,
+            "location": "body",
+            "notes": ""
+        },
+        {
+            "name": "Chain shirt",
+            "weight": 25,
+            "count": 1,
+            "camp": false,
+            "on_person": true,
+            "location": "body",
+            "notes": ""
+        },
+        {
+            "name": "Dagger",
+            "weight": 1,
+            "count": 1,
+            "camp": false,
+            "on_person": true,
+            "location": "belt",
+            "notes": ""
+        }
+    ],
+    "saving_throws": {
+        "fortitude": {
+            "base": 4,
+            "misc": [
+                0
+            ]
+        },
+        "reflex": {
+            "base": 1,
+            "misc": [
+                0
+            ]
+        },
+        "will": {
+            "base": 1,
+            "misc": [
+                0
+            ]
+        }
+    },
+    "skills": {
+        "Acrobatics": {
+            "name": "Acrobatics",
+            "rank": 0,
+            "isClass": false,
+            "mod": "dex",
+            "notes": "",
+            "useUntrained": true,
+            "misc": [
+                0
+            ]
+        },
+        "Appraise": {
+            "name": "Appraise",
+            "rank": 0,
+            "isClass": false,
+            "mod": "int",
+            "notes": "",
+            "useUntrained": true,
+            "misc": [
+                0
+            ]
+        },
+        "Bluff": {
+            "name": "Bluff",
+            "rank": 1,
+            "isClass": false,
+            "mod": "cha",
+            "notes": "",
+            "useUntrained": true,
+            "misc": [
+                0
+            ]
+        },
+        "Climb": {
+            "name": "Climb",
+            "rank": 1,
+            "isClass": true,
+            "mod": "str",
+            "notes": "",
+            "useUntrained": true,
+            "misc": [
+                0
+            ]
+        },
+        "Craft": {
+            "name": "Craft",
+            "rank": 2,
+            "isClass": true,
+            "mod": "int",
+            "notes": "Carpentry",
+            "useUntrained": true,
+            "misc": [
+                0
+            ]
+        },
+        "Diplomacy": {
+            "name": "Diplomacy",
+            "rank": 1,
+            "isClass": true,
+            "mod": "cha",
+            "notes": "",
+            "useUntrained": true,
+            "misc": [
+                1
+            ]
+        },
+        "Disable Device": {
+            "name": "Disable Device",
+            "rank": 0,
+            "isClass": false,
+            "mod": "dex",
+            "notes": "",
+            "useUntrained": false,
+            "misc": [
+                0
+            ]
+        },
+        "Disguise": {
+            "name": "Disguise",
+            "rank": 0,
+            "isClass": false,
+            "mod": "cha",
+            "notes": "",
+            "useUntrained": true,
+            "misc": [
+                0
+            ]
+        },
+        "Escape Artist": {
+            "name": "Escape Artist",
+            "rank": 0,
+            "isClass": false,
+            "mod": "dex",
+            "notes": "",
+            "useUntrained": true,
+            "misc": [
+                0
+            ]
+        },
+        "Fly": {
+            "name": "Fly",
+            "rank": 0,
+            "isClass": false,
+            "mod": "dex",
+            "notes": "",
+            "useUntrained": true,
+            "misc": [
+                0
+            ]
+        },
+        "Handle Animal": {
+            "name": "Handle Animal",
+            "rank": 1,
+            "isClass": true,
+            "mod": "cha",
+            "notes": "",
+            "useUntrained": false,
+            "misc": [
+                0
+            ]
+        },
+        "Heal": {
+            "name": "Heal",
+            "rank": 0,
+            "isClass": false,
+            "mod": "wis",
+            "notes": "",
+            "useUntrained": true,
+            "misc": [
+                0
+            ]
+        },
+        "Intimidate": {
+            "name": "Intimidate",
+            "rank": 2,
+            "isClass": true,
+            "mod": "cha",
+            "notes": "",
+            "useUntrained": true,
+            "misc": [
+                0
+            ]
+        },
+        "Knowledge (Arcana)": {
+            "name": "Knowledge (Arcana)",
+            "rank": 0,
+            "isClass": false,
+            "mod": "int",
+            "notes": "",
+            "useUntrained": false,
+            "misc": [
+                0
+            ]
+        },
+        "Knowledge (Dungeoneering)": {
+            "name": "Knowledge (Dungeoneering)",
+            "rank": 1,
+            "isClass": true,
+            "mod": "int",
+            "notes": "",
+            "useUntrained": false,
+            "misc": [
+                0
+            ]
+        },
+        "Knowledge (Engineering)": {
+            "name": "Knowledge (Engineering)",
+            "rank": 2,
+            "isClass": true,
+            "mod": "int",
+            "notes": "",
+            "useUntrained": false,
+            "misc": [
+                0
+            ]
+        },
+        "Knowledge (Geography)": {
+            "name": "Knowledge (Geography)",
+            "rank": 0,
+            "isClass": false,
+            "mod": "int",
+            "notes": "",
+            "useUntrained": false,
+            "misc": [
+                0
+            ]
+        },
+        "Knowledge (History)": {
+            "name": "Knowledge (History)",
+            "rank": 0,
+            "isClass": false,
+            "mod": "int",
+            "notes": "",
+            "useUntrained": false,
+            "misc": [
+                0
+            ]
+        },
+        "Knowledge (Local)": {
+            "name": "Knowledge (Local)",
+            "rank": 0,
+            "isClass": false,
+            "mod": "int",
+            "notes": "",
+            "useUntrained": false,
+            "misc": [
+                0
+            ]
+        },
+        "Knowledge (Nature)": {
+            "name": "Knowledge (Nature)",
+            "rank": 0,
+            "isClass": false,
+            "mod": "int",
+            "notes": "",
+            "useUntrained": false,
+            "misc": [
+                0
+            ]
+        },
+        "Knowledge (Nobility)": {
+            "name": "Knowledge (Nobility)",
+            "rank": 0,
+            "isClass": false,
+            "mod": "int",
+            "notes": "",
+            "useUntrained": false,
+            "misc": [
+                0
+            ]
+        },
+        "Knowledge (Planes)": {
+            "name": "Knowledge (Planes)",
+            "rank": 0,
+            "isClass": false,
+            "mod": "int",
+            "notes": "",
+            "useUntrained": false,
+            "misc": [
+                0
+            ]
+        },
+        "Knowledge (Religion)": {
+            "name": "Knowledge (Religion)",
+            "rank": 0,
+            "isClass": false,
+            "mod": "int",
+            "notes": "",
+            "useUntrained": false,
+            "misc": [
+                0
+            ]
+        },
+        "Linguistics": {
+            "name": "Linguistics",
+            "rank": 0,
+            "isClass": false,
+            "mod": "int",
+            "notes": "",
+            "useUntrained": false,
+            "misc": [
+                0
+            ]
+        },
+        "Perception": {
+            "name": "Perception",
+            "rank": 4,
+            "isClass": false,
+            "mod": "wis",
+            "notes": "Alertness",
+            "useUntrained": true,
+            "misc": [
+                2,
+                1
+            ]
+        },
+        "Perform": {
+            "name": "Perform",
+            "rank": 0,
+            "isClass": false,
+            "mod": "cha",
+            "notes": "",
+            "useUntrained": true,
+            "misc": [
+                0
+            ]
+        },
+        "Profession": {
+            "name": "Profession",
+            "rank": 4,
+            "isClass": true,
+            "mod": "wis",
+            "notes": "Innkeeper",
+            "useUntrained": false,
+            "misc": [
+                0
+            ]
+        },
+        "Ride": {
+            "name": "Ride",
+            "rank": 1,
+            "isClass": true,
+            "mod": "dex",
+            "notes": "",
+            "useUntrained": true,
+            "misc": [
+                0
+            ]
+        },
+        "Sense Motive": {
+            "name": "Sense Motive",
+            "rank": 4,
+            "isClass": true,
+            "mod": "wis",
+            "notes": "Alertness",
+            "useUntrained": true,
+            "misc": [
+                2,
+                1
+            ]
+        },
+        "Sleight Of Hand": {
+            "name": "Sleight Of Hand",
+            "rank": 0,
+            "isClass": false,
+            "mod": "dex",
+            "notes": "",
+            "useUntrained": false,
+            "misc": [
+                0
+            ]
+        },
+        "Spellcraft": {
+            "name": "Spellcraft",
+            "rank": 0,
+            "isClass": false,
+            "mod": "int",
+            "notes": "",
+            "useUntrained": false,
+            "misc": [
+                0
+            ]
+        },
+        "Stealth": {
+            "name": "Stealth",
+            "rank": 0,
+            "isClass": false,
+            "mod": "dex",
+            "notes": "",
+            "useUntrained": true,
+            "misc": [
+                0
+            ]
+        },
+        "Survival": {
+            "name": "Survival",
+            "rank": 4,
+            "isClass": true,
+            "mod": "wis",
+            "notes": "",
+            "useUntrained": true,
+            "misc": [
+                0
+            ]
+        },
+        "Swim": {
+            "name": "Swim",
+            "rank": 0,
+            "isClass": false,
+            "mod": "str",
+            "notes": "",
+            "useUntrained": true,
+            "misc": [
+                0
+            ]
+        },
+        "Use Magic Device": {
+            "name": "Use Magic Device",
+            "rank": 0,
+            "isClass": false,
+            "mod": "cha",
+            "notes": "",
+            "useUntrained": false,
+            "misc": [
+                0
+            ]
+        }
+    },
+    "spells": [
+        {
+            "name": "fireball",
+            "level": 5,
+            "description": "shoot fireball",
+            "prepared": 3,
+            "cast": 2
+        }
+    ],
+    "attacks": [
+        {
+            "name": "Truncheon",
+            "attackType": "melee",
+            "damageType": "blunt",
+            "attack_mod": "str",
+            "damage_mod": "str",
+            "damage": "1d6",
+            "critRoll": 20,
+            "critMulti": 2,
+            "range": 0,
+            "notes": "Nonlethal, +2 to hit (+1 masterwork, +1 Close Combatant)"
+        },
+        {
+            "name": "Baton",
+            "attackType": "melee",
+            "damageType": "blunt",
+            "attack_mod": "str",
+            "damage_mod": "str",
+            "damage": "1d6+1d4",
+            "critRoll": 20,
+            "critMulti": 2,
+            "range": 0,
+            "notes": "Nonlethal, +1 to hit (Close Combatant); 1d4 is electric"
+        },
+        {
+            "name": "Dagger",
+            "attackType": "melee",
+            "damageType": "piercing/slashing",
+            "attack_mod": "dex",
+            "damage_mod": "str",
+            "damage": "1d4+3",
+            "critRoll": 19,
+            "critMulti": 2,
+            "range": 0,
+            "notes": ""
+        }
+    ],
+    "armor": [
+        {
+            "name": "Chain Shirt",
+            "acBonus": 4,
+            "acPenalty": -2,
+            "maxDexBonus": 4,
+            "arcaneFailureChance": 20,
+            "type": "light"
+        },
+        {
+            "name": "test armor",
+            "acBonus": 2,
+            "acPenalty": -1,
+            "maxDexBonus": 8,
+            "arcaneFailureChance": 10,
+            "type": "medium"
+        }
+    ]
+}
