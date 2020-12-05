@@ -5,7 +5,7 @@ import pythfinder as pf
 import json
 from flask import Flask, abort, request
 
-with open("$HOME/pythfinder-flask/samuel.json") as f:
+with open("/home/matt/pythfinder-flask/samuel.json") as f:
     c = pf.Character(json.load(f))
 
 app = Flask(__name__)
@@ -24,12 +24,10 @@ def character_name():
 
 @app.route("/character/equipment")
 def character_equipment():
-    if request.args:
-        return json.dumps(pf.filter_list(c.equipment, request.args))
-    else:
-        return json.dumps(c.equipment)
+    filter_data = dict(request.args) if request.args else {}
+    return json.dumps(c.get_item(data = filter_data))
 
-@app.route("/character/equipment/name:<name>")
+@app.route("/character/equipment")
 def character_equipment_name(name):
     out = None
     for item in c.equipment:
