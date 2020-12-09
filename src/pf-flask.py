@@ -20,7 +20,79 @@ def character():
 
 @app.route("/character/name")
 def character_name():
-    return c.name
+    return json.dumps(c.name)
+
+@app.route("/character/race")
+def character_race():
+    return json.dumps(c.race)
+
+@app.route("/character/deity")
+def character_deity():
+    return json.dumps(c.deity)
+
+@app.route("/character/homeland")
+def character_homeland():
+    return json.dumps(c.homeland)
+
+@app.route("/character/CMB")
+def character_CMB():
+    return json.dumps(c.CMB)
+
+@app.route("/character/CMD")
+def character_CMD():
+    return json.dumps(c.CMD)
+
+@app.route("/character/alignment")
+def character_alignment():
+    return json.dumps(c.alignment)
+
+@app.route("/character/description")
+def character_description():
+    return json.dumps(c.description)
+
+@app.route("/character/height")
+def character_height():
+    return json.dumps(c.height)
+
+@app.route("/character/weight")
+def character_weight():
+    return json.dumps(c.weight)
+
+@app.route("/character/size")
+def character_size():
+    return json.dumps(c.size)
+
+@app.route("/character/age")
+def character_age():
+    return json.dumps(c.age)
+
+@app.route("/character/hair")
+def character_hair():
+    return json.dumps(c.hair)
+
+@app.route("/character/eyes")
+def character_eyes():
+    return json.dumps(c.eyes)
+
+@app.route("/character/baseAttackBonus")
+def character_baseAttackBonus():
+    return json.dumps(c.baseAttackBonus)
+
+@app.route("/character/gold")
+def character_gold():
+    return json.dumps(c.gold)
+
+@app.route("/character/initiativeMods")
+def character_initiativeMods():
+    return json.dumps(c.initiativeMods)
+
+@app.route("/character/AC")
+def character_AC():
+    return json.dumps(c.AC)
+
+@app.route("/character/spellsPerDay")
+def character_spellsPerDay():
+    return json.dumps(c.spellsPerDay)
 
 @app.route("/character/equipment")
 def character_equipment():
