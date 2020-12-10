@@ -56,23 +56,34 @@ def character_name():
         out = return_json(message = message, status = status)
         return json.dumps(out), out["status"], HEADER
 
-@app.route("/character/equipment")
+@app.route("/character/equipment", methods = HTTP_METHODS)
 def character_equipment():
-    name = request.args.get("name") if request.args.get("name") else []
-    weight = request.args.get("weight") if request.args.get("weight") else {}
-    if weight:
-        weight = json.loads(str(request.args.get("weight")).replace("'", '"')) 
-    count = request.args.get("count") if request.args.get("count") else {}
-    if count:
-        count = json.loads(str(request.args.get("count")).replace("'", '"')) 
-    camp = request.args.get("camp") if request.args.get("camp") else []
-    on_person = request.args.get("on_person") if request.args.get("on_person") else []
-    location = request.args.get("location") if request.args.get("location") else []
-    notes = request.args.get("notes") if request.args.get("notes") else []
-    return json.dumps(c.get_item(name = name,
-                                 weight = weight,
-                                 count = count,
-                                 camp = camp,
-                                 on_person = on_person,
-                                 location = location,
-                                 notes = notes))
+    if request.method == "GET":
+        name = request.args.get("name") if request.args.get("name") else []
+        weight = request.args.get("weight") if request.args.get("weight") else {}
+        if weight:
+            weight = json.loads(str(request.args.get("weight")).replace("'", '"')) 
+        count = request.args.get("count") if request.args.get("count") else {}
+        if count:
+            count = json.loads(str(request.args.get("count")).replace("'", '"')) 
+        camp = request.args.get("camp") if request.args.get("camp") else []
+        on_person = request.args.get("on_person") if request.args.get("on_person") else []
+        location = request.args.get("location") if request.args.get("location") else []
+        notes = request.args.get("notes") if request.args.get("notes") else []
+        get_data = {
+            "name": name,
+            "weight": weight,
+            "count": count,
+            "camp": camp,
+            "on_person": on_person,
+            "location": location,
+            "notes": notes
+        }
+        try:
+            data = c.get_item(data = get_data)
+            out = return_json(data = data)
+        except (KeyError, ValueError) as err:
+            message = "pythfinder error: {}".format(err)
+            status = 400
+            out = return_json(message = message, status = status)
+        return json.dumps(out), out["status"], HEADER
