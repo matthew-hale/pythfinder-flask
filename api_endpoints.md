@@ -77,3 +77,14 @@ c.delete_element(name = class name, type_ = class) -> DELETE /character/classes/
 ```
 GET /character/classes?name=Fighter&level={"lt": 4}
 ```
+
+## Return structure
+Requests always return valid JSON in the following structure:
+
+{
+    "status": 200,
+    "message": "",
+    "data": {}
+}
+
+This makes it easier to handle pretty much everything involved.
