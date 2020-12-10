@@ -5,10 +5,20 @@ import pythfinder as pf
 import json
 from flask import Flask, abort, request
 
+HTTP_METHODS = ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE', 'PATCH']
+HEADER = {"Content-Type":"application/json"}
+
 with open("/home/matt/pythfinder-flask/samuel.json") as f:
     c = pf.Character(json.load(f))
 
 app = Flask(__name__)
+
+def return_json(status = 200, message = "", data = {}):
+    return {
+        "status": status,
+        "message": message,
+        "data": data
+    }
 
 @app.route("/")
 def hey():
@@ -16,83 +26,35 @@ def hey():
 
 @app.route("/character")
 def character():
-    return c.getJson()
+    data = json.loads(c.getJson())
+    out = return_json(data = data)
+    return json.dumps(out), out["status"], HEADER
 
-@app.route("/character/name")
+@app.route("/character/name", methods = HTTP_METHODS)
 def character_name():
-    return json.dumps(c.name)
-
-@app.route("/character/race")
-def character_race():
-    return json.dumps(c.race)
-
-@app.route("/character/deity")
-def character_deity():
-    return json.dumps(c.deity)
-
-@app.route("/character/homeland")
-def character_homeland():
-    return json.dumps(c.homeland)
-
-@app.route("/character/CMB")
-def character_CMB():
-    return json.dumps(c.CMB)
-
-@app.route("/character/CMD")
-def character_CMD():
-    return json.dumps(c.CMD)
-
-@app.route("/character/alignment")
-def character_alignment():
-    return json.dumps(c.alignment)
-
-@app.route("/character/description")
-def character_description():
-    return json.dumps(c.description)
-
-@app.route("/character/height")
-def character_height():
-    return json.dumps(c.height)
-
-@app.route("/character/weight")
-def character_weight():
-    return json.dumps(c.weight)
-
-@app.route("/character/size")
-def character_size():
-    return json.dumps(c.size)
-
-@app.route("/character/age")
-def character_age():
-    return json.dumps(c.age)
-
-@app.route("/character/hair")
-def character_hair():
-    return json.dumps(c.hair)
-
-@app.route("/character/eyes")
-def character_eyes():
-    return json.dumps(c.eyes)
-
-@app.route("/character/baseAttackBonus")
-def character_baseAttackBonus():
-    return json.dumps(c.baseAttackBonus)
-
-@app.route("/character/gold")
-def character_gold():
-    return json.dumps(c.gold)
-
-@app.route("/character/initiativeMods")
-def character_initiativeMods():
-    return json.dumps(c.initiativeMods)
-
-@app.route("/character/AC")
-def character_AC():
-    return json.dumps(c.AC)
-
-@app.route("/character/spellsPerDay")
-def character_spellsPerDay():
-    return json.dumps(c.spellsPerDay)
+    if request.method == "GET":
+        data = {
+            "name": c.name
+        }
+        out = return_json(data = data)
+        return json.dumps(out), out["status"], HEADER
+    elif request.method == "PUT":
+        name = request.json
+        keys = name.keys()
+        if name and "name" in keys:
+            data = name
+            c.name = name["name"]
+            out = return_json(data = data)
+        else:
+            message = "Improper data format: JSON must contain a 'name' key."
+            status = 400
+            out = return_json(message = message, status = status)
+        return json.dumps(out), out["status"], HEADER
+    else:
+        message = "Request type not allowed"
+        status = 405
+        out = return_json(message = message, status = status)
+        return json.dumps(out), out["status"], HEADER
 
 @app.route("/character/equipment")
 def character_equipment():
