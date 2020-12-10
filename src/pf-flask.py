@@ -20,6 +20,9 @@ def return_json(status = 200, message = "", data = {}):
         "data": data
     }
 
+def return_bad_request():
+    return return_json(status = 405, message = "Bad request type")
+
 @app.route("/")
 def hey():
     return "Browse to /character to view character json"
@@ -37,7 +40,6 @@ def character_name():
             "name": c.name
         }
         out = return_json(data = data)
-        return json.dumps(out), out["status"], HEADER
     elif request.method == "PUT":
         name = request.json
         keys = name.keys()
@@ -49,12 +51,9 @@ def character_name():
             message = "Improper data format: JSON must contain a 'name' key."
             status = 400
             out = return_json(message = message, status = status)
-        return json.dumps(out), out["status"], HEADER
     else:
-        message = "Request type not allowed"
-        status = 405
-        out = return_json(message = message, status = status)
-        return json.dumps(out), out["status"], HEADER
+        out = return_bad_request()
+    return json.dumps(out), out["status"], HEADER
 
 @app.route("/character/equipment", methods = HTTP_METHODS)
 def character_equipment():
@@ -86,4 +85,6 @@ def character_equipment():
             message = "pythfinder error: {}".format(err)
             status = 400
             out = return_json(message = message, status = status)
-        return json.dumps(out), out["status"], HEADER
+    else:
+        out = return_bad_request()
+    return json.dumps(out), out["status"], HEADER
