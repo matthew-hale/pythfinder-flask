@@ -58,8 +58,6 @@ def character_name():
 
 @app.route("/character/equipment")
 def character_equipment():
-    #filter_data = dict(request.args) if request.args else {}
-    #return json.dumps(c.get_item(data = filter_data))
     name = request.args.get("name") if request.args.get("name") else []
     weight = request.args.get("weight") if request.args.get("weight") else {}
     if weight:
