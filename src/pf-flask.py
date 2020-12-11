@@ -3,7 +3,7 @@
 
 import pythfinder as pf
 import json
-from flask import Flask, abort, request
+from flask import Flask, abort, request, Blueprint
 
 HTTP_METHODS = ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE', 'PATCH']
 HEADER = {"Content-Type":"application/json"}
@@ -11,6 +11,7 @@ HEADER = {"Content-Type":"application/json"}
 with open("/home/matt/pythfinder-flask/samuel.json") as f:
     c = pf.Character(json.load(f))
 
+bp = Blueprint('pythfinder-flask', __name__, url_prefix = "/api/v0")
 app = Flask(__name__)
 
 def return_json(status = 200, message = "", data = {}):
@@ -25,15 +26,15 @@ def return_bad_request():
 
 @app.route("/")
 def hey():
-    return "Browse to /character to view character json"
+    return "Browse to /api/v0/character to view character json"
 
-@app.route("/character")
+@bp.route("/character")
 def character():
     data = json.loads(c.getJson())
     out = return_json(data = data)
     return json.dumps(out), out["status"], HEADER
 
-@app.route("/character/name", methods = HTTP_METHODS)
+@bp.route("/character/name", methods = HTTP_METHODS)
 def character_name():
     if request.method == "GET":
         data = {
@@ -55,7 +56,7 @@ def character_name():
         out = return_bad_request()
     return json.dumps(out), out["status"], HEADER
 
-@app.route("/character/equipment", methods = HTTP_METHODS)
+@bp.route("/character/equipment", methods = HTTP_METHODS)
 def character_equipment():
     if request.method == "GET":
         name = request.args.get("name") if request.args.get("name") else []
@@ -88,3 +89,5 @@ def character_equipment():
     else:
         out = return_bad_request()
     return json.dumps(out), out["status"], HEADER
+
+app.register_blueprint(bp)
