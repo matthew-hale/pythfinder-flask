@@ -25,8 +25,11 @@ def return_bad_request():
     return return_json(status = 405, message = "Bad request type")
 
 @app.route("/")
-def hey():
-    return "Browse to /api/v0/character to view character json"
+def index():
+    message = "Browse to /api/v0/character to view character json"
+    status = 404
+    out = return_json(message = message, status = status)
+    return json.dumps(out), out["status"], HEADER
 
 @bp.route("/character")
 def character():
