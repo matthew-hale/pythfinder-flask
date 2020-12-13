@@ -553,4 +553,54 @@ def character_equipment():
         out = return_bad_request()
     return json.dumps(out), out["status"], HEADER
 
+@bp.route("/character/abilities", methods = HTTP_METHODS)
+def character_abilities():
+    if request.method == "GET":
+        name = request.args.get("name") if request.args.get("name") else []
+        base = request.args.get("base") if request.args.get("base") else {}
+        if base:
+            base = json.loads(str(request.args.get("base")).replace("'", '"')) 
+        misc = request.args.get("misc") if request.args.get("misc") else {}
+        if misc:
+            misc = json.loads(str(request.args.get("misc")).replace("'", '"')) 
+        get_data = {
+            "name": name,
+            "base": base,
+            "misc": misc
+        }
+        try:
+            data = g.c.get_ability(data = get_data)
+            out = return_json(data = data)
+        except (KeyError, ValueError) as err:
+            message = "pythfinder error: {}".format(err)
+            status = 400
+            out = return_json(message = message, status = status)
+    else:
+        out = return_bad_request()
+    return json.dumps(out), out["status"], HEADER
+
+@bp.route("/character/classes", methods = HTTP_METHODS)
+def character_classes():
+    if request.method == "GET":
+        name = request.args.get("name") if request.args.get("name") else []
+        archetypes = request.args.get("archetypes") if request.args.get("archetypes") else []
+        level = request.args.get("level") if request.args.get("level") else {}
+        if level:
+            level = json.loads(str(request.args.get("level")).replace("'", '"')) 
+        get_data = {
+            "name": name,
+            "archetypes": archetypes,
+            "level": level
+        }
+        try:
+            data = g.c.get_class(data = get_data)
+            out = return_json(data = data)
+        except (KeyError, ValueError) as err:
+            message = "pythfinder error: {}".format(err)
+            status = 400
+            out = return_json(message = message, status = status)
+    else:
+        out = return_bad_request()
+    return json.dumps(out), out["status"], HEADER
+
 app.register_blueprint(bp)
