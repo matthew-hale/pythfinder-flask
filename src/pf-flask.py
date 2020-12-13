@@ -603,4 +603,70 @@ def character_classes():
         out = return_bad_request()
     return json.dumps(out), out["status"], HEADER
 
+@bp.route("/character/feats", methods = HTTP_METHODS)
+def character_feats():
+    if request.method == "GET":
+        name = request.args.get("name").split(",") if request.args.get("name") else []
+        description = request.args.get("description").split(",") if request.args.get("description") else []
+        notes = request.args.get("notes").split(",") if request.args.get("notes") else []
+        get_data = {
+            "name": name,
+            "description": description,
+            "notes": notes
+        }
+        try:
+            data = g.c.get_feat(data = get_data)
+            out = return_json(data = data)
+        except (KeyError, ValueError) as err:
+            message = "pythfinder error: {}".format(err)
+            status = 400
+            out = return_json(message = message, status = status)
+    else:
+        out = return_bad_request()
+    return json.dumps(out), out["status"], HEADER
+
+@bp.route("/character/traits", methods = HTTP_METHODS)
+def character_traits():
+    if request.method == "GET":
+        name = request.args.get("name").split(",") if request.args.get("name") else []
+        description = request.args.get("description").split(",") if request.args.get("description") else []
+        notes = request.args.get("notes").split(",") if request.args.get("notes") else []
+        get_data = {
+            "name": name,
+            "description": description,
+            "notes": notes
+        }
+        try:
+            data = g.c.get_trait(data = get_data)
+            out = return_json(data = data)
+        except (KeyError, ValueError) as err:
+            message = "pythfinder error: {}".format(err)
+            status = 400
+            out = return_json(message = message, status = status)
+    else:
+        out = return_bad_request()
+    return json.dumps(out), out["status"], HEADER
+
+@bp.route("/character/special", methods = HTTP_METHODS)
+def character_special():
+    if request.method == "GET":
+        name = request.args.get("name").split(",") if request.args.get("name") else []
+        description = request.args.get("description").split(",") if request.args.get("description") else []
+        notes = request.args.get("notes").split(",") if request.args.get("notes") else []
+        get_data = {
+            "name": name,
+            "description": description,
+            "notes": notes
+        }
+        try:
+            data = g.c.get_special(data = get_data)
+            out = return_json(data = data)
+        except (KeyError, ValueError) as err:
+            message = "pythfinder error: {}".format(err)
+            status = 400
+            out = return_json(message = message, status = status)
+    else:
+        out = return_bad_request()
+    return json.dumps(out), out["status"], HEADER
+
 app.register_blueprint(bp)
