@@ -6,6 +6,7 @@ from flask import Flask, abort, request, Blueprint, session, g
 from uuid import uuid4 as uuid
 from redis import Redis
 
+TIMEOUT = 14*24*60*60 # timeout in seconds; == 14 days
 HTTP_METHODS = ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE', 'PATCH']
 HEADER = {"Content-Type":"application/json"}
 
@@ -44,6 +45,7 @@ def setup_request_context():
 def cache_character(response):
     c_data = g.c.getJson()
     r.set(session["id"], c_data)
+    r.expire(session["id"], TIMEOUT)
     return response
 
 @app.route("/")
