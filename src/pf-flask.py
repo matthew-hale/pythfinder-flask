@@ -522,17 +522,17 @@ def character_AC():
 @bp.route("/character/equipment", methods = HTTP_METHODS)
 def character_equipment():
     if request.method == "GET":
-        name = request.args.get("name") if request.args.get("name") else []
+        name = request.args.get("name").split(",") if request.args.get("name") else []
         weight = request.args.get("weight") if request.args.get("weight") else {}
         if weight:
             weight = json.loads(str(request.args.get("weight")).replace("'", '"')) 
         count = request.args.get("count") if request.args.get("count") else {}
         if count:
             count = json.loads(str(request.args.get("count")).replace("'", '"')) 
-        camp = request.args.get("camp") if request.args.get("camp") else []
-        on_person = request.args.get("on_person") if request.args.get("on_person") else []
-        location = request.args.get("location") if request.args.get("location") else []
-        notes = request.args.get("notes") if request.args.get("notes") else []
+        camp = request.args.get("camp").split(",") if request.args.get("camp") else []
+        on_person = request.args.get("on_person").split(",") if request.args.get("on_person") else []
+        location = request.args.get("location").split(",") if request.args.get("location") else []
+        notes = request.args.get("notes").split(",") if request.args.get("notes") else []
         get_data = {
             "name": name,
             "weight": weight,
@@ -556,7 +556,7 @@ def character_equipment():
 @bp.route("/character/abilities", methods = HTTP_METHODS)
 def character_abilities():
     if request.method == "GET":
-        name = request.args.get("name") if request.args.get("name") else []
+        name = request.args.get("name").split(",") if request.args.get("name") else []
         base = request.args.get("base") if request.args.get("base") else {}
         if base:
             base = json.loads(str(request.args.get("base")).replace("'", '"')) 
@@ -582,8 +582,8 @@ def character_abilities():
 @bp.route("/character/classes", methods = HTTP_METHODS)
 def character_classes():
     if request.method == "GET":
-        name = request.args.get("name") if request.args.get("name") else []
-        archetypes = request.args.get("archetypes") if request.args.get("archetypes") else []
+        name = request.args.get("name").split(",") if request.args.get("name") else []
+        archetypes = request.args.get("archetypes").split(",") if request.args.get("archetypes") else []
         level = request.args.get("level") if request.args.get("level") else {}
         if level:
             level = json.loads(str(request.args.get("level")).replace("'", '"')) 
