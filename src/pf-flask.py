@@ -1,18 +1,22 @@
 #!/bin/python3
 
-
 import pythfinder as pf
 import json
-from flask import Flask, abort, request, Blueprint
+from flask import Flask, abort, request, Blueprint, session, g
+from uuid import uuid4 as uuid
+from redis import Redis
 
 HTTP_METHODS = ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE', 'PATCH']
 HEADER = {"Content-Type":"application/json"}
 
-with open("/home/matt/pf-flask/samuel.json") as f:
-    c = pf.Character(json.load(f))
+# initialize redis
+r = Redis(host = "localhost", port = 6379, db = 0, decode_responses = True)
 
 bp = Blueprint('pythfinder-flask', __name__, url_prefix = "/api/v0")
 app = Flask(__name__)
+
+# secret development key (set this locally in config for deployment)
+app.secret_key = b"this is the development server key for testing, please don't use this in production!"
 
 def return_json(status = 200, message = "", data = {}):
     return {
@@ -24,6 +28,24 @@ def return_json(status = 200, message = "", data = {}):
 def return_bad_request():
     return return_json(status = 405, message = "Bad request type")
 
+@app.before_request
+def setup_request_context():
+    session_keys = session.keys()
+    if "id" not in session_keys:
+        session["id"] = str(uuid())
+    if not r.exists(session["id"]):
+        blank_character = pf.Character()
+        raw_json = blank_character.getJson()
+        r.set(session["id"], raw_json)
+    c_data = json.loads(r.get(session["id"]))
+    g.c = pf.Character(data = c_data)
+
+@app.after_request
+def cache_character(response):
+    c_data = g.c.getJson()
+    r.set(session["id"], c_data)
+    return response
+
 @app.route("/")
 def index():
     message = "Browse to /api/v0/character to view character json"
@@ -31,9 +53,29 @@ def index():
     out = return_json(message = message, status = status)
     return json.dumps(out), out["status"], HEADER
 
+@bp.route("/set_character", methods = HTTP_METHODS)
+def set_character():
+    out = return_json()
+    if request.method == "PUT":
+        new_c = request.json
+        if new_c:
+            new_c_character = pf.Character(data = new_c)
+            new_c_json = new_c_character.getJson()
+            r.set(session["id"], new_c_json)
+            g.c = pf.Character(data = json.loads(r.get(session["id"])))
+            message = "OK"
+            out = return_json(message = message)
+        else:
+            message = "Invalid character data or content type"
+            status = 400
+            out = return_json(message = message, status = status)
+    else:
+        out = return_bad_request()
+    return json.dumps(out), out["status"], HEADER
+
 @bp.route("/character")
 def character():
-    data = json.loads(c.getJson())
+    data = json.loads(g.c.getJson())
     out = return_json(data = data)
     return json.dumps(out), out["status"], HEADER
 
@@ -41,7 +83,7 @@ def character():
 def character_name():
     if request.method == "GET":
         data = {
-            "name": c.name
+            "name": g.c.name
         }
         out = return_json(data = data)
     elif request.method == "PUT":
@@ -49,7 +91,7 @@ def character_name():
         keys = name.keys()
         if name and "name" in keys:
             data = name
-            c.name = name["name"]
+            g.c.name = name["name"]
             out = return_json(data = data)
         else:
             message = "Improper data format: JSON must contain a 'name' key."
@@ -63,7 +105,7 @@ def character_name():
 def character_race():
     if request.method == "GET":
         data = {
-            "race": c.race
+            "race": g.c.race
         }
         out = return_json(data = data)
     elif request.method == "PUT":
@@ -71,7 +113,7 @@ def character_race():
         keys = race.keys()
         if race and "race" in keys:
             data = race
-            c.race = race["race"]
+            g.c.race = race["race"]
             out = return_json(data = data)
         else:
             message = "Improper data format: JSON must contain a 'race' key."
@@ -85,7 +127,7 @@ def character_race():
 def character_deity():
     if request.method == "GET":
         data = {
-            "deity": c.deity
+            "deity": g.c.deity
         }
         out = return_json(data = data)
     elif request.method == "PUT":
@@ -93,7 +135,7 @@ def character_deity():
         keys = deity.keys()
         if deity and "deity" in keys:
             data = deity
-            c.deity = deity["deity"]
+            g.c.deity = deity["deity"]
             out = return_json(data = data)
         else:
             message = "Improper data format: JSON must contain a 'deity' key."
@@ -107,7 +149,7 @@ def character_deity():
 def character_homeland():
     if request.method == "GET":
         data = {
-            "homeland": c.homeland
+            "homeland": g.c.homeland
         }
         out = return_json(data = data)
     elif request.method == "PUT":
@@ -115,7 +157,7 @@ def character_homeland():
         keys = homeland.keys()
         if homeland and "homeland" in keys:
             data = homeland
-            c.homeland = homeland["homeland"]
+            g.c.homeland = homeland["homeland"]
             out = return_json(data = data)
         else:
             message = "Improper data format: JSON must contain a 'homeland' key."
@@ -129,7 +171,7 @@ def character_homeland():
 def character_CMB():
     if request.method == "GET":
         data = {
-            "CMB": c.CMB
+            "CMB": g.c.CMB
         }
         out = return_json(data = data)
     elif request.method == "PUT":
@@ -137,7 +179,7 @@ def character_CMB():
         keys = CMB.keys()
         if CMB and "CMB" in keys:
             data = CMB
-            c.CMB = CMB["CMB"]
+            g.c.CMB = CMB["CMB"]
             out = return_json(data = data)
         else:
             message = "Improper data format: JSON must contain a 'CMB' key."
@@ -151,7 +193,7 @@ def character_CMB():
 def character_CMD():
     if request.method == "GET":
         data = {
-            "CMD": c.CMD
+            "CMD": g.c.CMD
         }
         out = return_json(data = data)
     elif request.method == "PUT":
@@ -159,7 +201,7 @@ def character_CMD():
         keys = CMD.keys()
         if CMD and "CMD" in keys:
             data = CMD
-            c.CMD = CMD["CMD"]
+            g.c.CMD = CMD["CMD"]
             out = return_json(data = data)
         else:
             message = "Improper data format: JSON must contain a 'CMD' key."
@@ -173,7 +215,7 @@ def character_CMD():
 def character_initiativeMods():
     if request.method == "GET":
         data = {
-            "initiativeMods": c.initiativeMods
+            "initiativeMods": g.c.initiativeMods
         }
         out = return_json(data = data)
     elif request.method == "PUT":
@@ -181,7 +223,7 @@ def character_initiativeMods():
         keys = initiativeMods.keys()
         if initiativeMods and "initiativeMods" in keys:
             data = initiativeMods
-            c.initiativeMods = initiativeMods["initiativeMods"]
+            g.c.initiativeMods = initiativeMods["initiativeMods"]
             out = return_json(data = data)
         else:
             message = "Improper data format: JSON must contain a 'initiativeMods' key."
@@ -195,7 +237,7 @@ def character_initiativeMods():
 def character_alignment():
     if request.method == "GET":
         data = {
-            "alignment": c.alignment
+            "alignment": g.c.alignment
         }
         out = return_json(data = data)
     elif request.method == "PUT":
@@ -203,7 +245,7 @@ def character_alignment():
         keys = alignment.keys()
         if alignment and "alignment" in keys:
             data = alignment
-            c.alignment = alignment["alignment"]
+            g.c.alignment = alignment["alignment"]
             out = return_json(data = data)
         else:
             message = "Improper data format: JSON must contain a 'alignment' key."
@@ -217,7 +259,7 @@ def character_alignment():
 def character_description():
     if request.method == "GET":
         data = {
-            "description": c.description
+            "description": g.c.description
         }
         out = return_json(data = data)
     elif request.method == "PUT":
@@ -225,7 +267,7 @@ def character_description():
         keys = description.keys()
         if description and "description" in keys:
             data = description
-            c.description = description["description"]
+            g.c.description = description["description"]
             out = return_json(data = data)
         else:
             message = "Improper data format: JSON must contain a 'description' key."
@@ -239,7 +281,7 @@ def character_description():
 def character_height():
     if request.method == "GET":
         data = {
-            "height": c.height
+            "height": g.c.height
         }
         out = return_json(data = data)
     elif request.method == "PUT":
@@ -247,7 +289,7 @@ def character_height():
         keys = height.keys()
         if height and "height" in keys:
             data = height
-            c.height = height["height"]
+            g.c.height = height["height"]
             out = return_json(data = data)
         else:
             message = "Improper data format: JSON must contain a 'height' key."
@@ -261,7 +303,7 @@ def character_height():
 def character_weight():
     if request.method == "GET":
         data = {
-            "weight": c.weight
+            "weight": g.c.weight
         }
         out = return_json(data = data)
     elif request.method == "PUT":
@@ -269,7 +311,7 @@ def character_weight():
         keys = weight.keys()
         if weight and "weight" in keys:
             data = weight
-            c.weight = weight["weight"]
+            g.c.weight = weight["weight"]
             out = return_json(data = data)
         else:
             message = "Improper data format: JSON must contain a 'weight' key."
@@ -283,7 +325,7 @@ def character_weight():
 def character_size():
     if request.method == "GET":
         data = {
-            "size": c.size
+            "size": g.c.size
         }
         out = return_json(data = data)
     elif request.method == "PUT":
@@ -291,7 +333,7 @@ def character_size():
         keys = size.keys()
         if size and "size" in keys:
             data = size
-            c.size = size["size"]
+            g.c.size = size["size"]
             out = return_json(data = data)
         else:
             message = "Improper data format: JSON must contain a 'size' key."
@@ -305,7 +347,7 @@ def character_size():
 def character_age():
     if request.method == "GET":
         data = {
-            "age": c.age
+            "age": g.c.age
         }
         out = return_json(data = data)
     elif request.method == "PUT":
@@ -313,7 +355,7 @@ def character_age():
         keys = age.keys()
         if age and "age" in keys:
             data = age
-            c.age = age["age"]
+            g.c.age = age["age"]
             out = return_json(data = data)
         else:
             message = "Improper data format: JSON must contain a 'age' key."
@@ -327,7 +369,7 @@ def character_age():
 def character_hair():
     if request.method == "GET":
         data = {
-            "hair": c.hair
+            "hair": g.c.hair
         }
         out = return_json(data = data)
     elif request.method == "PUT":
@@ -335,7 +377,7 @@ def character_hair():
         keys = hair.keys()
         if hair and "hair" in keys:
             data = hair
-            c.hair = hair["hair"]
+            g.c.hair = hair["hair"]
             out = return_json(data = data)
         else:
             message = "Improper data format: JSON must contain a 'hair' key."
@@ -349,7 +391,7 @@ def character_hair():
 def character_eyes():
     if request.method == "GET":
         data = {
-            "eyes": c.eyes
+            "eyes": g.c.eyes
         }
         out = return_json(data = data)
     elif request.method == "PUT":
@@ -357,7 +399,7 @@ def character_eyes():
         keys = eyes.keys()
         if eyes and "eyes" in keys:
             data = eyes
-            c.eyes = eyes["eyes"]
+            g.c.eyes = eyes["eyes"]
             out = return_json(data = data)
         else:
             message = "Improper data format: JSON must contain a 'eyes' key."
@@ -371,7 +413,7 @@ def character_eyes():
 def character_languages():
     if request.method == "GET":
         data = {
-            "languages": c.languages
+            "languages": g.c.languages
         }
         out = return_json(data = data)
     elif request.method == "PUT":
@@ -379,7 +421,7 @@ def character_languages():
         keys = languages.keys()
         if languages and "languages" in keys:
             data = languages
-            c.languages = languages["languages"]
+            g.c.languages = languages["languages"]
             out = return_json(data = data)
         else:
             message = "Improper data format: JSON must contain a 'languages' key."
@@ -393,7 +435,7 @@ def character_languages():
 def character_spellsPerDay():
     if request.method == "GET":
         data = {
-            "spellsPerDay": c.spellsPerDay
+            "spellsPerDay": g.c.spellsPerDay
         }
         out = return_json(data = data)
     elif request.method == "PUT":
@@ -401,7 +443,7 @@ def character_spellsPerDay():
         keys = spellsPerDay.keys()
         if spellsPerDay and "spellsPerDay" in keys:
             data = spellsPerDay
-            c.spellsPerDay = spellsPerDay["spellsPerDay"]
+            g.c.spellsPerDay = spellsPerDay["spellsPerDay"]
             out = return_json(data = data)
         else:
             message = "Improper data format: JSON must contain a 'spellsPerDay' key."
@@ -415,7 +457,7 @@ def character_spellsPerDay():
 def character_baseAttackBonus():
     if request.method == "GET":
         data = {
-            "baseAttackBonus": c.baseAttackBonus
+            "baseAttackBonus": g.c.baseAttackBonus
         }
         out = return_json(data = data)
     elif request.method == "PUT":
@@ -423,7 +465,7 @@ def character_baseAttackBonus():
         keys = baseAttackBonus.keys()
         if baseAttackBonus and "baseAttackBonus" in keys:
             data = baseAttackBonus
-            c.baseAttackBonus = baseAttackBonus["baseAttackBonus"]
+            g.c.baseAttackBonus = baseAttackBonus["baseAttackBonus"]
             out = return_json(data = data)
         else:
             message = "Improper data format: JSON must contain a 'baseAttackBonus' key."
@@ -437,7 +479,7 @@ def character_baseAttackBonus():
 def character_gold():
     if request.method == "GET":
         data = {
-            "gold": c.gold
+            "gold": g.c.gold
         }
         out = return_json(data = data)
     elif request.method == "PUT":
@@ -445,7 +487,7 @@ def character_gold():
         keys = gold.keys()
         if gold and "gold" in keys:
             data = gold
-            c.gold = gold["gold"]
+            g.c.gold = gold["gold"]
             out = return_json(data = data)
         else:
             message = "Improper data format: JSON must contain a 'gold' key."
@@ -459,7 +501,7 @@ def character_gold():
 def character_AC():
     if request.method == "GET":
         data = {
-            "AC": c.AC
+            "AC": g.c.AC
         }
         out = return_json(data = data)
     elif request.method == "PUT":
@@ -467,7 +509,7 @@ def character_AC():
         keys = AC.keys()
         if AC and "AC" in keys:
             data = AC
-            c.AC = AC["AC"]
+            g.c.AC = AC["AC"]
             out = return_json(data = data)
         else:
             message = "Improper data format: JSON must contain a 'AC' key."
@@ -501,7 +543,7 @@ def character_equipment():
             "notes": notes
         }
         try:
-            data = c.get_item(data = get_data)
+            data = g.c.get_item(data = get_data)
             out = return_json(data = data)
         except (KeyError, ValueError) as err:
             message = "pythfinder error: {}".format(err)
