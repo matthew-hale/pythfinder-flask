@@ -8,7 +8,7 @@ from flask import Flask, abort, request, Blueprint
 HTTP_METHODS = ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE', 'PATCH']
 HEADER = {"Content-Type":"application/json"}
 
-with open("/home/matt/pythfinder-flask/samuel.json") as f:
+with open("/home/matt/pf-flask/samuel.json") as f:
     c = pf.Character(json.load(f))
 
 bp = Blueprint('pythfinder-flask', __name__, url_prefix = "/api/v0")
