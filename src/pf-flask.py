@@ -669,4 +669,44 @@ def character_special():
         out = return_bad_request()
     return json.dumps(out), out["status"], HEADER
 
+@bp.route("/character/skills", methods = HTTP_METHODS)
+def character_skills():
+    if request.method == "GET":
+        name = request.args.get("name").split(",") if request.args.get("name") else []
+        rank = request.args.get("rank") if request.args.get("rank") else {}
+        if rank:
+            rank = json.loads(str(request.args.get("rank")).replace("'", '"')) 
+        if request.args.get("isClass") == None:
+            isClass = []
+        else:
+            isClass = request.args.get("isClass") == "true"
+        mod = request.args.get("mod").split(",") if request.args.get("mod") else []
+        notes = request.args.get("notes").split(",") if request.args.get("notes") else []
+        if request.args.get("useUntrained") == None:
+            useUntrained = []
+        else:
+            useUntrained = request.args.get("useUntrained") == "true"
+        misc = request.args.get("misc") if request.args.get("misc") else {}
+        if misc:
+            misc = json.loads(str(request.args.get("misc")).replace("'", '"')) 
+        get_data = {
+            "name": name,
+            "rank": rank,
+            "isClass": isClass,
+            "mod": mod,
+            "notes": notes,
+            "useUntrained": useUntrained,
+            "misc": misc
+        }
+        try:
+            data = g.c.get_skill(data = get_data)
+            out = return_json(data = data)
+        except (KeyError, ValueError) as err:
+            message = "pythfinder error: {}".format(err)
+            status = 400
+            out = return_json(message = message, status = status)
+    else:
+        out = return_bad_request()
+    return json.dumps(out), out["status"], HEADER
+
 app.register_blueprint(bp)
