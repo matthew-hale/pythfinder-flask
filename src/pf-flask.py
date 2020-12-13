@@ -9,7 +9,7 @@ from redis import Redis
 HTTP_METHODS = ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE', 'PATCH']
 HEADER = {"Content-Type":"application/json"}
 
-# initialize redis
+# initialize redis connector
 r = Redis(host = "localhost", port = 6379, db = 0, decode_responses = True)
 
 bp = Blueprint('pythfinder-flask', __name__, url_prefix = "/api/v0")
