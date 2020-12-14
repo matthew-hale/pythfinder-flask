@@ -521,6 +521,50 @@ def character_AC():
         out = return_bad_request()
     return json.dumps(out), out["status"], HEADER
 
+@bp.route("/character/speed", methods = HTTP_METHODS)
+def character_speed():
+    if request.method == "GET":
+        data = {
+            "speed": g.c.speed
+        }
+        out = return_json(data = data)
+    elif request.method == "PUT":
+        speed = request.json
+        keys = speed.keys()
+        if speed and "speed" in keys:
+            data = speed
+            g.c.speed = speed["speed"]
+            out = return_json(data = data)
+        else:
+            message = "Improper data format: JSON must contain a 'speed' key."
+            status = 400
+            out = return_json(message = message, status = status)
+    else:
+        out = return_bad_request()
+    return json.dumps(out), out["status"], HEADER
+
+@bp.route("/character/hp", methods = HTTP_METHODS)
+def character_hp():
+    if request.method == "GET":
+        data = {
+            "hp": g.c.hp
+        }
+        out = return_json(data = data)
+    elif request.method == "PUT":
+        hp = request.json
+        keys = hp.keys()
+        if hp and "hp" in keys:
+            data = hp
+            g.c.hp = hp["hp"]
+            out = return_json(data = data)
+        else:
+            message = "Improper data format: JSON must contain a 'hp' key."
+            status = 400
+            out = return_json(message = message, status = status)
+    else:
+        out = return_bad_request()
+    return json.dumps(out), out["status"], HEADER
+
 @bp.route("/character/equipment", methods = HTTP_METHODS)
 def character_equipment():
     if request.method == "GET":
@@ -572,6 +616,32 @@ def character_abilities():
         }
         try:
             data = g.c.get_ability(data = get_data)
+            out = return_json(data = data)
+        except (KeyError, ValueError) as err:
+            message = "pythfinder error: {}".format(err)
+            status = 400
+            out = return_json(message = message, status = status)
+    else:
+        out = return_bad_request()
+    return json.dumps(out), out["status"], HEADER
+
+@bp.route("/character/saving_throws", methods = HTTP_METHODS)
+def character_saving_throws():
+    if request.method == "GET":
+        name = request.args.get("name").split(",") if request.args.get("name") else []
+        base = request.args.get("base") if request.args.get("base") else {}
+        if base:
+            base = json.loads(str(request.args.get("base")).replace("'", '"')) 
+        misc = request.args.get("misc") if request.args.get("misc") else {}
+        if misc:
+            misc = json.loads(str(request.args.get("misc")).replace("'", '"')) 
+        get_data = {
+            "name": name,
+            "base": base,
+            "misc": misc
+        }
+        try:
+            data = g.c.get_saving_throw(data = get_data)
             out = return_json(data = data)
         except (KeyError, ValueError) as err:
             message = "pythfinder error: {}".format(err)
