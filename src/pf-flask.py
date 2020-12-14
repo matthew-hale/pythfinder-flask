@@ -711,4 +711,114 @@ def character_skills():
         out = return_bad_request()
     return json.dumps(out), out["status"], HEADER
 
+@bp.route("/character/spells", methods = HTTP_METHODS)
+def character_spells():
+    if request.method == "GET":
+        name = request.args.get("name").split(",") if request.args.get("name") else []
+        level = request.args.get("level") if request.args.get("level") else {}
+        if level:
+            level = json.loads(str(request.args.get("level")).replace("'", '"')) 
+        description = request.args.get("description").split(",") if request.args.get("description") else []
+        prepared = request.args.get("prepared") if request.args.get("prepared") else {}
+        if prepared:
+            prepared = json.loads(str(request.args.get("prepared")).replace("'", '"')) 
+        cast = request.args.get("cast") if request.args.get("cast") else {}
+        if cast:
+            cast = json.loads(str(request.args.get("cast")).replace("'", '"')) 
+        get_data = {
+            "name": name,
+            "level": level,
+            "description": description,
+            "prepared": prepared,
+            "cast": cast
+        }
+        try:
+            data = g.c.get_spell(data = get_data)
+            out = return_json(data = data)
+        except (KeyError, ValueError) as err:
+            message = "pythfinder error: {}".format(err)
+            status = 400
+            out = return_json(message = message, status = status)
+    else:
+        out = return_bad_request()
+    return json.dumps(out), out["status"], HEADER
+
+@bp.route("/character/armor", methods = HTTP_METHODS)
+def character_armor():
+    if request.method == "GET":
+        name = request.args.get("name").split(",") if request.args.get("name") else []
+        acBonus = request.args.get("acBonus") if request.args.get("acBonus") else {}
+        if acBonus:
+            acBonus = json.loads(str(request.args.get("acBonus")).replace("'", '"')) 
+        acPenalty = request.args.get("acPenalty") if request.args.get("acPenalty") else {}
+        if acPenalty:
+            acPenalty = json.loads(str(request.args.get("acPenalty")).replace("'", '"')) 
+        maxDexBonus = request.args.get("maxDexBonus") if request.args.get("maxDexBonus") else {}
+        if maxDexBonus:
+            maxDexBonus = json.loads(str(request.args.get("maxDexBonus")).replace("'", '"')) 
+        arcaneFailureChance = request.args.get("arcaneFailureChance") if request.args.get("arcaneFailureChance") else {}
+        if arcaneFailureChance:
+            arcaneFailureChance = json.loads(str(request.args.get("arcaneFailureChance")).replace("'", '"')) 
+        type_ = request.args.get("type").split(",") if request.args.get("type") else []
+        get_data = {
+            "name": name,
+            "acBonus": acBonus,
+            "acPenalty": acPenalty,
+            "maxDexBonus": maxDexBonus,
+            "arcaneFailureChance": arcaneFailureChance,
+            "type": type_,
+        }
+        try:
+            data = g.c.get_armor(data = get_data)
+            out = return_json(data = data)
+        except (KeyError, ValueError) as err:
+            message = "pythfinder error: {}".format(err)
+            status = 400
+            out = return_json(message = message, status = status)
+    else:
+        out = return_bad_request()
+    return json.dumps(out), out["status"], HEADER
+
+@bp.route("/character/attacks", methods = HTTP_METHODS)
+def character_attacks():
+    if request.method == "GET":
+        name = request.args.get("name").split(",") if request.args.get("name") else []
+        attackType = request.args.get("attackType").split(",") if request.args.get("attackType") else []
+        damageType = request.args.get("damageType").split(",") if request.args.get("damageType") else []
+        attack_mod = request.args.get("attack_mod").split(",") if request.args.get("attack_mod") else []
+        damage_mod = request.args.get("damage_mod").split(",") if request.args.get("damage_mod") else []
+        damage = request.args.get("damage").split(",") if request.args.get("damage") else []
+        critRoll = request.args.get("critRoll") if request.args.get("critRoll") else {}
+        if critRoll:
+            critRoll = json.loads(str(request.args.get("critRoll")).replace("'", '"')) 
+        critMulti = request.args.get("critMulti") if request.args.get("critMulti") else {}
+        if critMulti:
+            critMulti = json.loads(str(request.args.get("critMulti")).replace("'", '"')) 
+        range_ = request.args.get("range") if request.args.get("range") else {}
+        if range_:
+            range_ = json.loads(str(request.args.get("range")).replace("'", '"')) 
+        notes = request.args.get("notes").split(",") if request.args.get("notes") else []
+        get_data = {
+            "name": name,
+            "attackType": attackType,
+            "damageType": damageType,
+            "attack_mod": attack_mod,
+            "damage_mod": damage_mod,
+            "damage": damage,
+            "critRoll": critRoll,
+            "critMulti": critMulti,
+            "range": range_,
+            "notes": notes
+        }
+        try:
+            data = g.c.get_attack(data = get_data)
+            out = return_json(data = data)
+        except (KeyError, ValueError) as err:
+            message = "pythfinder error: {}".format(err)
+            status = 400
+            out = return_json(message = message, status = status)
+    else:
+        out = return_bad_request()
+    return json.dumps(out), out["status"], HEADER
+
 app.register_blueprint(bp)
