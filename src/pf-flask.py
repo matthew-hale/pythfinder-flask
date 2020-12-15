@@ -8,7 +8,7 @@ from redis import Redis
 
 TIMEOUT = 14*24*60*60 # timeout in seconds; == 14 days
 HTTP_METHODS = ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE', 'PATCH']
-HEADER = {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"}
+HEADER = {"Content-Type": "application/json", "Access-Control-Allow-Credentials": "true", "Access-Control-Allow-Origin": "http://localhost:8000"}
 
 # initialize redis connector
 r = Redis(host = "localhost", port = 6379, db = 0, decode_responses = True)
