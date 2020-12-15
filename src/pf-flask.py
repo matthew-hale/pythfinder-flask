@@ -8,7 +8,7 @@ from redis import Redis
 
 TIMEOUT = 14*24*60*60 # timeout in seconds; == 14 days
 HTTP_METHODS = ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE', 'PATCH']
-HEADER = {"Content-Type":"application/json"}
+HEADER = {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"}
 
 # initialize redis connector
 r = Redis(host = "localhost", port = 6379, db = 0, decode_responses = True)
@@ -32,6 +32,7 @@ def return_bad_request():
 @app.before_request
 def setup_request_context():
     session_keys = session.keys()
+    # Fresh session; generate new id
     if "id" not in session_keys:
         session["id"] = str(uuid())
     if not r.exists(session["id"]):
