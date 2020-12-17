@@ -33,8 +33,20 @@ def return_json(status = 200, message = "", data = {}):
         "data": data
     }
 
-def return_bad_request():
-    return return_json(status = 405, message = "Bad request type")
+@app.errorhandler(400)
+def bad_request(e):
+    out = return_json(status = 400, message = str(e))
+    return json.dumps(out), 400, HEADER
+
+@app.errorhandler(404)
+def not_found(e):
+    out = return_json(status = 404, message = str(e))
+    return json.dumps(out), 404, HEADER
+
+@app.errorhandler(405)
+def method_not_allowed(e):
+    out = return_json(status = 405, message = str(e))
+    return json.dumps(out), 405, HEADER
 
 @app.before_request
 def setup_request_context():
@@ -58,29 +70,22 @@ def cache_character(response):
 
 @app.route("/")
 def index():
-    message = "Browse to /api/v0/character to view character json"
-    status = 404
-    out = return_json(message = message, status = status)
-    return json.dumps(out), out["status"], HEADER
+    abort(404, description = "browse to /api/v0/character to view character json")
 
-@bp.route("/set_character", methods = HTTP_METHODS)
+@bp.route("/set_character", methods = ["PUT"])
 def set_character():
-    out = return_json()
-    if request.method == "PUT":
-        new_c = request.json
-        if new_c:
-            new_c_character = pf.Character(data = new_c)
-            new_c_json = new_c_character.getJson()
-            r.set(session["id"], new_c_json)
-            g.c = pf.Character(data = json.loads(r.get(session["id"])))
-            message = "OK"
-            out = return_json(message = message)
-        else:
-            message = "Invalid character data or content type"
-            status = 400
-            out = return_json(message = message, status = status)
+    print("test")
+    new_c = request.get_json()
+    print(new_c)
+    if new_c:
+        new_c_character = pf.Character(data = new_c)
+        new_c_json = new_c_character.getJson()
+        r.set(session["id"], new_c_json)
+        g.c = pf.Character(data = json.loads(r.get(session["id"])))
+        message = "OK"
+        out = return_json(message = message)
     else:
-        out = return_bad_request()
+        abort(400, description = "invalid character data or content type")
     return json.dumps(out), out["status"], HEADER
 
 @bp.route("/character")
