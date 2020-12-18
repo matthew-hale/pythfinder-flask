@@ -94,7 +94,7 @@ def character():
     out = return_json(data = data)
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/name", methods = HTTP_METHODS)
+@bp.route("/character/name", methods = ["GET", "PUT"])
 def character_name():
     if request.method == "GET":
         data = {
@@ -102,21 +102,17 @@ def character_name():
         }
         out = return_json(data = data)
     elif request.method == "PUT":
-        name = request.json
+        name = request.get_json()
         keys = name.keys()
         if name and "name" in keys:
             data = name
             g.c.name = name["name"]
             out = return_json(data = data)
         else:
-            message = "Improper data format: JSON must contain a 'name' key."
-            status = 400
-            out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
+            abort(400, description = "improper data format: JSON must contain a 'name' key")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/race", methods = HTTP_METHODS)
+@bp.route("/character/race", methods = ["GET", "PUT"])
 def character_race():
     if request.method == "GET":
         data = {
@@ -131,14 +127,10 @@ def character_race():
             g.c.race = race["race"]
             out = return_json(data = data)
         else:
-            message = "Improper data format: JSON must contain a 'race' key."
-            status = 400
-            out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
+            abort(400, description = "improper data format: JSON must contain a 'race' key.")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/deity", methods = HTTP_METHODS)
+@bp.route("/character/deity", methods = ["GET", "PUT"])
 def character_deity():
     if request.method == "GET":
         data = {
@@ -153,14 +145,10 @@ def character_deity():
             g.c.deity = deity["deity"]
             out = return_json(data = data)
         else:
-            message = "Improper data format: JSON must contain a 'deity' key."
-            status = 400
-            out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
+            abort(400, description = "improper data format: JSON must contain a 'deity' key.")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/homeland", methods = HTTP_METHODS)
+@bp.route("/character/homeland", methods = ["GET", "PUT"])
 def character_homeland():
     if request.method == "GET":
         data = {
@@ -175,14 +163,10 @@ def character_homeland():
             g.c.homeland = homeland["homeland"]
             out = return_json(data = data)
         else:
-            message = "Improper data format: JSON must contain a 'homeland' key."
-            status = 400
-            out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
+            abort(400, description = "improper data format: JSON must contain a 'homeland' key.")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/CMB", methods = HTTP_METHODS)
+@bp.route("/character/CMB", methods = ["GET", "PUT"])
 def character_CMB():
     if request.method == "GET":
         data = {
@@ -197,14 +181,10 @@ def character_CMB():
             g.c.CMB = CMB["CMB"]
             out = return_json(data = data)
         else:
-            message = "Improper data format: JSON must contain a 'CMB' key."
-            status = 400
-            out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
+            abort(400, description = "improper data format: JSON must contain a 'CMB' key.")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/CMD", methods = HTTP_METHODS)
+@bp.route("/character/CMD", methods = ["GET", "PUT"])
 def character_CMD():
     if request.method == "GET":
         data = {
@@ -219,14 +199,10 @@ def character_CMD():
             g.c.CMD = CMD["CMD"]
             out = return_json(data = data)
         else:
-            message = "Improper data format: JSON must contain a 'CMD' key."
-            status = 400
-            out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
+            abort(400, description = "improper data format: JSON must contain a 'CMD' key.")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/initiativeMods", methods = HTTP_METHODS)
+@bp.route("/character/initiativeMods", methods = ["GET", "PUT"])
 def character_initiativeMods():
     if request.method == "GET":
         data = {
@@ -241,14 +217,10 @@ def character_initiativeMods():
             g.c.initiativeMods = initiativeMods["initiativeMods"]
             out = return_json(data = data)
         else:
-            message = "Improper data format: JSON must contain a 'initiativeMods' key."
-            status = 400
-            out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
+            abort(400, description = "improper data format: JSON must contain a 'initiativeMods' key.")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/alignment", methods = HTTP_METHODS)
+@bp.route("/character/alignment", methods = ["GET", "PUT"])
 def character_alignment():
     if request.method == "GET":
         data = {
@@ -263,14 +235,10 @@ def character_alignment():
             g.c.alignment = alignment["alignment"]
             out = return_json(data = data)
         else:
-            message = "Improper data format: JSON must contain a 'alignment' key."
-            status = 400
-            out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
+            abort(400, description = "improper data format: JSON must contain a 'alignment' key.")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/description", methods = HTTP_METHODS)
+@bp.route("/character/description", methods = ["GET", "PUT"])
 def character_description():
     if request.method == "GET":
         data = {
@@ -285,14 +253,10 @@ def character_description():
             g.c.description = description["description"]
             out = return_json(data = data)
         else:
-            message = "Improper data format: JSON must contain a 'description' key."
-            status = 400
-            out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
+            abort(400, description = "improper data format: JSON must contain a 'description' key.")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/height", methods = HTTP_METHODS)
+@bp.route("/character/height", methods = ["GET", "PUT"])
 def character_height():
     if request.method == "GET":
         data = {
@@ -307,14 +271,10 @@ def character_height():
             g.c.height = height["height"]
             out = return_json(data = data)
         else:
-            message = "Improper data format: JSON must contain a 'height' key."
-            status = 400
-            out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
+            abort(400, description = "improper data format: JSON must contain a 'height' key.")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/weight", methods = HTTP_METHODS)
+@bp.route("/character/weight", methods = ["GET", "PUT"])
 def character_weight():
     if request.method == "GET":
         data = {
@@ -329,14 +289,10 @@ def character_weight():
             g.c.weight = weight["weight"]
             out = return_json(data = data)
         else:
-            message = "Improper data format: JSON must contain a 'weight' key."
-            status = 400
-            out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
+            abort(400, description = "improper data format: JSON must contain a 'weight' key.")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/size", methods = HTTP_METHODS)
+@bp.route("/character/size", methods = ["GET", "PUT"])
 def character_size():
     if request.method == "GET":
         data = {
@@ -351,14 +307,10 @@ def character_size():
             g.c.size = size["size"]
             out = return_json(data = data)
         else:
-            message = "Improper data format: JSON must contain a 'size' key."
-            status = 400
-            out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
+            abort(400, description = "improper data format: JSON must contain a 'size' key.")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/age", methods = HTTP_METHODS)
+@bp.route("/character/age", methods = ["GET", "PUT"])
 def character_age():
     if request.method == "GET":
         data = {
@@ -373,14 +325,10 @@ def character_age():
             g.c.age = age["age"]
             out = return_json(data = data)
         else:
-            message = "Improper data format: JSON must contain a 'age' key."
-            status = 400
-            out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
+            abort(400, description = "improper data format: JSON must contain a 'age' key.")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/hair", methods = HTTP_METHODS)
+@bp.route("/character/hair", methods = ["GET", "PUT"])
 def character_hair():
     if request.method == "GET":
         data = {
@@ -395,14 +343,10 @@ def character_hair():
             g.c.hair = hair["hair"]
             out = return_json(data = data)
         else:
-            message = "Improper data format: JSON must contain a 'hair' key."
-            status = 400
-            out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
+            abort(400, description = "improper data format: JSON must contain a 'hair' key.")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/eyes", methods = HTTP_METHODS)
+@bp.route("/character/eyes", methods = ["GET", "PUT"])
 def character_eyes():
     if request.method == "GET":
         data = {
@@ -417,14 +361,10 @@ def character_eyes():
             g.c.eyes = eyes["eyes"]
             out = return_json(data = data)
         else:
-            message = "Improper data format: JSON must contain a 'eyes' key."
-            status = 400
-            out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
+            abort(400, description = "improper data format: JSON must contain a 'eyes' key.")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/languages", methods = HTTP_METHODS)
+@bp.route("/character/languages", methods = ["GET", "PUT"])
 def character_languages():
     if request.method == "GET":
         data = {
@@ -439,14 +379,10 @@ def character_languages():
             g.c.languages = languages["languages"]
             out = return_json(data = data)
         else:
-            message = "Improper data format: JSON must contain a 'languages' key."
-            status = 400
-            out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
+            abort(400, description = "improper data format: JSON must contain a 'languages' key.")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/spellsPerDay", methods = HTTP_METHODS)
+@bp.route("/character/spellsPerDay", methods = ["GET", "PUT"])
 def character_spellsPerDay():
     if request.method == "GET":
         data = {
@@ -461,14 +397,10 @@ def character_spellsPerDay():
             g.c.spellsPerDay = spellsPerDay["spellsPerDay"]
             out = return_json(data = data)
         else:
-            message = "Improper data format: JSON must contain a 'spellsPerDay' key."
-            status = 400
-            out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
+            abort(400, description = "improper data format: JSON must contain a 'spellsPerDay' key.")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/baseAttackBonus", methods = HTTP_METHODS)
+@bp.route("/character/baseAttackBonus", methods = ["GET", "PUT"])
 def character_baseAttackBonus():
     if request.method == "GET":
         data = {
@@ -483,14 +415,10 @@ def character_baseAttackBonus():
             g.c.baseAttackBonus = baseAttackBonus["baseAttackBonus"]
             out = return_json(data = data)
         else:
-            message = "Improper data format: JSON must contain a 'baseAttackBonus' key."
-            status = 400
-            out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
+            abort(400, description = "improper data format: JSON must contain a 'baseAttackBonus' key.")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/gold", methods = HTTP_METHODS)
+@bp.route("/character/gold", methods = ["GET", "PUT"])
 def character_gold():
     if request.method == "GET":
         data = {
@@ -505,14 +433,10 @@ def character_gold():
             g.c.gold = gold["gold"]
             out = return_json(data = data)
         else:
-            message = "Improper data format: JSON must contain a 'gold' key."
-            status = 400
-            out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
+            abort(400, description = "improper data format: JSON must contain a 'gold' key.")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/AC", methods = HTTP_METHODS)
+@bp.route("/character/AC", methods = ["GET", "PUT"])
 def character_AC():
     if request.method == "GET":
         data = {
@@ -527,14 +451,10 @@ def character_AC():
             g.c.AC = AC["AC"]
             out = return_json(data = data)
         else:
-            message = "Improper data format: JSON must contain a 'AC' key."
-            status = 400
-            out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
+            abort(400, description = "improper data format: JSON must contain a 'AC' key.")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/speed", methods = HTTP_METHODS)
+@bp.route("/character/speed", methods = ["GET", "PUT"])
 def character_speed():
     if request.method == "GET":
         data = {
@@ -549,14 +469,10 @@ def character_speed():
             g.c.speed = speed["speed"]
             out = return_json(data = data)
         else:
-            message = "Improper data format: JSON must contain a 'speed' key."
-            status = 400
-            out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
+            abort(400, description = "improper data format: JSON must contain a 'speed' key.")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/hp", methods = HTTP_METHODS)
+@bp.route("/character/hp", methods = ["GET", "PUT"])
 def character_hp():
     if request.method == "GET":
         data = {
@@ -571,11 +487,7 @@ def character_hp():
             g.c.hp = hp["hp"]
             out = return_json(data = data)
         else:
-            message = "Improper data format: JSON must contain a 'hp' key."
-            status = 400
-            out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
+            abort(400, description = "improper data format: JSON must contain a 'hp' key.")
     return json.dumps(out), out["status"], HEADER
 
 @bp.route("/character/equipment", methods = HTTP_METHODS)
@@ -608,8 +520,6 @@ def character_equipment():
             message = "pythfinder error: {}".format(err)
             status = 400
             out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
     return json.dumps(out), out["status"], HEADER
 
 @bp.route("/character/abilities", methods = HTTP_METHODS)
@@ -634,8 +544,6 @@ def character_abilities():
             message = "pythfinder error: {}".format(err)
             status = 400
             out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
     return json.dumps(out), out["status"], HEADER
 
 @bp.route("/character/saving_throws", methods = HTTP_METHODS)
@@ -660,8 +568,6 @@ def character_saving_throws():
             message = "pythfinder error: {}".format(err)
             status = 400
             out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
     return json.dumps(out), out["status"], HEADER
 
 @bp.route("/character/classes", methods = HTTP_METHODS)
@@ -684,8 +590,6 @@ def character_classes():
             message = "pythfinder error: {}".format(err)
             status = 400
             out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
     return json.dumps(out), out["status"], HEADER
 
 @bp.route("/character/feats", methods = HTTP_METHODS)
@@ -706,8 +610,6 @@ def character_feats():
             message = "pythfinder error: {}".format(err)
             status = 400
             out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
     return json.dumps(out), out["status"], HEADER
 
 @bp.route("/character/traits", methods = HTTP_METHODS)
@@ -728,8 +630,6 @@ def character_traits():
             message = "pythfinder error: {}".format(err)
             status = 400
             out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
     return json.dumps(out), out["status"], HEADER
 
 @bp.route("/character/special", methods = HTTP_METHODS)
@@ -750,8 +650,6 @@ def character_special():
             message = "pythfinder error: {}".format(err)
             status = 400
             out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
     return json.dumps(out), out["status"], HEADER
 
 @bp.route("/character/skills", methods = HTTP_METHODS)
@@ -790,8 +688,6 @@ def character_skills():
             message = "pythfinder error: {}".format(err)
             status = 400
             out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
     return json.dumps(out), out["status"], HEADER
 
 @bp.route("/character/spells", methods = HTTP_METHODS)
@@ -822,8 +718,6 @@ def character_spells():
             message = "pythfinder error: {}".format(err)
             status = 400
             out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
     return json.dumps(out), out["status"], HEADER
 
 @bp.route("/character/armor", methods = HTTP_METHODS)
@@ -858,8 +752,6 @@ def character_armor():
             message = "pythfinder error: {}".format(err)
             status = 400
             out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
     return json.dumps(out), out["status"], HEADER
 
 @bp.route("/character/attacks", methods = HTTP_METHODS)
@@ -900,8 +792,6 @@ def character_attacks():
             message = "pythfinder error: {}".format(err)
             status = 400
             out = return_json(message = message, status = status)
-    else:
-        out = return_bad_request()
     return json.dumps(out), out["status"], HEADER
 
 app.register_blueprint(bp)
