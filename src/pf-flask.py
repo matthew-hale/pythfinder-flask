@@ -75,6 +75,7 @@ def set_character():
         new_c_json = new_c_character.getJson()
         r.set(session["id"], new_c_json)
         g.c = pf.Character(data = json.loads(r.get(session["id"])))
+        message = "OK"
         out = return_json(message = message)
     else:
         abort(400, description = "invalid character data or content type")
