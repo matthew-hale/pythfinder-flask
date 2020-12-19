@@ -120,7 +120,7 @@ def character_race():
         }
         out = return_json(data = data)
     elif request.method == "PUT":
-        race = request.json
+        race = request.get_json()
         keys = race.keys()
         if race and "race" in keys:
             data = race
@@ -138,7 +138,7 @@ def character_deity():
         }
         out = return_json(data = data)
     elif request.method == "PUT":
-        deity = request.json
+        deity = request.get_json()
         keys = deity.keys()
         if deity and "deity" in keys:
             data = deity
@@ -156,7 +156,7 @@ def character_homeland():
         }
         out = return_json(data = data)
     elif request.method == "PUT":
-        homeland = request.json
+        homeland = request.get_json()
         keys = homeland.keys()
         if homeland and "homeland" in keys:
             data = homeland
@@ -174,7 +174,7 @@ def character_CMB():
         }
         out = return_json(data = data)
     elif request.method == "PUT":
-        CMB = request.json
+        CMB = request.get_json()
         keys = CMB.keys()
         if CMB and "CMB" in keys:
             data = CMB
@@ -192,7 +192,7 @@ def character_CMD():
         }
         out = return_json(data = data)
     elif request.method == "PUT":
-        CMD = request.json
+        CMD = request.get_json()
         keys = CMD.keys()
         if CMD and "CMD" in keys:
             data = CMD
@@ -210,7 +210,7 @@ def character_initiativeMods():
         }
         out = return_json(data = data)
     elif request.method == "PUT":
-        initiativeMods = request.json
+        initiativeMods = request.get_json()
         keys = initiativeMods.keys()
         if initiativeMods and "initiativeMods" in keys:
             data = initiativeMods
@@ -228,7 +228,7 @@ def character_alignment():
         }
         out = return_json(data = data)
     elif request.method == "PUT":
-        alignment = request.json
+        alignment = request.get_json()
         keys = alignment.keys()
         if alignment and "alignment" in keys:
             data = alignment
@@ -246,7 +246,7 @@ def character_description():
         }
         out = return_json(data = data)
     elif request.method == "PUT":
-        description = request.json
+        description = request.get_json()
         keys = description.keys()
         if description and "description" in keys:
             data = description
@@ -264,7 +264,7 @@ def character_height():
         }
         out = return_json(data = data)
     elif request.method == "PUT":
-        height = request.json
+        height = request.get_json()
         keys = height.keys()
         if height and "height" in keys:
             data = height
@@ -282,7 +282,7 @@ def character_weight():
         }
         out = return_json(data = data)
     elif request.method == "PUT":
-        weight = request.json
+        weight = request.get_json()
         keys = weight.keys()
         if weight and "weight" in keys:
             data = weight
@@ -300,7 +300,7 @@ def character_size():
         }
         out = return_json(data = data)
     elif request.method == "PUT":
-        size = request.json
+        size = request.get_json()
         keys = size.keys()
         if size and "size" in keys:
             data = size
@@ -318,7 +318,7 @@ def character_age():
         }
         out = return_json(data = data)
     elif request.method == "PUT":
-        age = request.json
+        age = request.get_json()
         keys = age.keys()
         if age and "age" in keys:
             data = age
@@ -336,7 +336,7 @@ def character_hair():
         }
         out = return_json(data = data)
     elif request.method == "PUT":
-        hair = request.json
+        hair = request.get_json()
         keys = hair.keys()
         if hair and "hair" in keys:
             data = hair
@@ -354,7 +354,7 @@ def character_eyes():
         }
         out = return_json(data = data)
     elif request.method == "PUT":
-        eyes = request.json
+        eyes = request.get_json()
         keys = eyes.keys()
         if eyes and "eyes" in keys:
             data = eyes
@@ -372,7 +372,7 @@ def character_languages():
         }
         out = return_json(data = data)
     elif request.method == "PUT":
-        languages = request.json
+        languages = request.get_json()
         keys = languages.keys()
         if languages and "languages" in keys:
             data = languages
@@ -390,7 +390,7 @@ def character_spellsPerDay():
         }
         out = return_json(data = data)
     elif request.method == "PUT":
-        spellsPerDay = request.json
+        spellsPerDay = request.get_json()
         keys = spellsPerDay.keys()
         if spellsPerDay and "spellsPerDay" in keys:
             data = spellsPerDay
@@ -408,7 +408,7 @@ def character_baseAttackBonus():
         }
         out = return_json(data = data)
     elif request.method == "PUT":
-        baseAttackBonus = request.json
+        baseAttackBonus = request.get_json()
         keys = baseAttackBonus.keys()
         if baseAttackBonus and "baseAttackBonus" in keys:
             data = baseAttackBonus
@@ -426,7 +426,7 @@ def character_gold():
         }
         out = return_json(data = data)
     elif request.method == "PUT":
-        gold = request.json
+        gold = request.get_json()
         keys = gold.keys()
         if gold and "gold" in keys:
             data = gold
@@ -444,7 +444,7 @@ def character_AC():
         }
         out = return_json(data = data)
     elif request.method == "PUT":
-        AC = request.json
+        AC = request.get_json()
         keys = AC.keys()
         if AC and "AC" in keys:
             data = AC
@@ -462,7 +462,7 @@ def character_speed():
         }
         out = return_json(data = data)
     elif request.method == "PUT":
-        speed = request.json
+        speed = request.get_json()
         keys = speed.keys()
         if speed and "speed" in keys:
             data = speed
@@ -480,7 +480,7 @@ def character_hp():
         }
         out = return_json(data = data)
     elif request.method == "PUT":
-        hp = request.json
+        hp = request.get_json()
         keys = hp.keys()
         if hp and "hp" in keys:
             data = hp
@@ -490,7 +490,7 @@ def character_hp():
             abort(400, description = "improper data format: JSON must contain a 'hp' key.")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/equipment", methods = HTTP_METHODS)
+@bp.route("/character/equipment", methods = ["GET", "POST"])
 def character_equipment():
     if request.method == "GET":
         name = request.args.get("name").split(",") if request.args.get("name") else []
@@ -517,9 +517,17 @@ def character_equipment():
             data = g.c.get_item(data = get_data)
             out = return_json(data = data)
         except (KeyError, ValueError) as err:
-            message = "pythfinder error: {}".format(err)
-            status = 400
-            out = return_json(message = message, status = status)
+            abort(400, description = "pythfinder error: {}".format(err))
+    elif request.method == "POST":
+        post_data = request.get_json()
+        if post_data:
+            try:
+                item = g.c.add_item(data = post_data)
+                out = return_json(data = item)
+            except ValueError as err:
+                abort(400, description = "pythfinder error: {}".format(err))
+        else:
+            abort(400, description = "invalid post data")
     return json.dumps(out), out["status"], HEADER
 
 @bp.route("/character/abilities", methods = HTTP_METHODS)
