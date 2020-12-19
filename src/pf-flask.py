@@ -487,7 +487,7 @@ def character_hp():
 def character_equipment():
     if request.method == "GET":
         name = request.args.get("name").split(",") if request.args.get("name") else []
-        name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else None
+        name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else ""
         weight = request.args.get("weight") if request.args.get("weight") else {}
         if weight:
             weight = json.loads(str(request.args.get("weight")).replace("'", '"')) 
@@ -529,7 +529,7 @@ def character_equipment():
 def character_abilities():
     if request.method == "GET":
         name = request.args.get("name").split(",") if request.args.get("name") else []
-        name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else None
+        name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else ""
         base = request.args.get("base") if request.args.get("base") else {}
         if base:
             base = json.loads(str(request.args.get("base")).replace("'", '"')) 
@@ -555,7 +555,7 @@ def character_abilities():
 def character_saving_throws():
     if request.method == "GET":
         name = request.args.get("name").split(",") if request.args.get("name") else []
-        name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else None
+        name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else ""
         base = request.args.get("base") if request.args.get("base") else {}
         if base:
             base = json.loads(str(request.args.get("base")).replace("'", '"')) 
@@ -581,7 +581,7 @@ def character_saving_throws():
 def character_classes():
     if request.method == "GET":
         name = request.args.get("name").split(",") if request.args.get("name") else []
-        name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else None
+        name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else ""
         archetypes = request.args.get("archetypes").split(",") if request.args.get("archetypes") else []
         level = request.args.get("level") if request.args.get("level") else {}
         if level:
@@ -605,7 +605,7 @@ def character_classes():
 def character_feats():
     if request.method == "GET":
         name = request.args.get("name").split(",") if request.args.get("name") else []
-        name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else None
+        name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else ""
         description = request.args.get("description").split(",") if request.args.get("description") else []
         notes = request.args.get("notes").split(",") if request.args.get("notes") else []
         get_data = {
@@ -627,7 +627,7 @@ def character_feats():
 def character_traits():
     if request.method == "GET":
         name = request.args.get("name").split(",") if request.args.get("name") else []
-        name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else None
+        name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else ""
         description = request.args.get("description").split(",") if request.args.get("description") else []
         notes = request.args.get("notes").split(",") if request.args.get("notes") else []
         get_data = {
@@ -649,7 +649,7 @@ def character_traits():
 def character_special():
     if request.method == "GET":
         name = request.args.get("name").split(",") if request.args.get("name") else []
-        name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else None
+        name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else ""
         description = request.args.get("description").split(",") if request.args.get("description") else []
         notes = request.args.get("notes").split(",") if request.args.get("notes") else []
         get_data = {
@@ -671,7 +671,7 @@ def character_special():
 def character_skills():
     if request.method == "GET":
         name = request.args.get("name").split(",") if request.args.get("name") else []
-        name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else None
+        name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else ""
         rank = request.args.get("rank") if request.args.get("rank") else {}
         if rank:
             rank = json.loads(str(request.args.get("rank")).replace("'", '"')) 
@@ -711,7 +711,7 @@ def character_skills():
 def character_spells():
     if request.method == "GET":
         name = request.args.get("name").split(",") if request.args.get("name") else []
-        name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else None
+        name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else ""
         level = request.args.get("level") if request.args.get("level") else {}
         if level:
             level = json.loads(str(request.args.get("level")).replace("'", '"')) 
@@ -743,7 +743,7 @@ def character_spells():
 def character_armor():
     if request.method == "GET":
         name = request.args.get("name").split(",") if request.args.get("name") else []
-        name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else None
+        name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else ""
         acBonus = request.args.get("acBonus") if request.args.get("acBonus") else {}
         if acBonus:
             acBonus = json.loads(str(request.args.get("acBonus")).replace("'", '"')) 
@@ -779,7 +779,7 @@ def character_armor():
 def character_attacks():
     if request.method == "GET":
         name = request.args.get("name").split(",") if request.args.get("name") else []
-        name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else None
+        name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else ""
         attackType = request.args.get("attackType").split(",") if request.args.get("attackType") else []
         damageType = request.args.get("damageType").split(",") if request.args.get("damageType") else []
         attack_mod = request.args.get("attack_mod").split(",") if request.args.get("attack_mod") else []
