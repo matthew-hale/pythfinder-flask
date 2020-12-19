@@ -6,6 +6,7 @@ from flask import Flask, abort, request, Blueprint, session, g
 from uuid import uuid4 as uuid
 from redis import Redis
 from flask_cors import CORS
+from werkzeug.exceptions import HTTPException
 
 TIMEOUT = 14*24*60*60 # timeout in seconds; == 14 days
 HTTP_METHODS = ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE', 'PATCH']
@@ -33,20 +34,12 @@ def return_json(status = 200, message = "", data = {}):
         "data": data
     }
 
-@app.errorhandler(400)
-def bad_request(e):
-    out = return_json(status = 400, message = str(e))
-    return json.dumps(out), 400, HEADER
-
-@app.errorhandler(404)
-def not_found(e):
-    out = return_json(status = 404, message = str(e))
-    return json.dumps(out), 404, HEADER
-
-@app.errorhandler(405)
-def method_not_allowed(e):
-    out = return_json(status = 405, message = str(e))
-    return json.dumps(out), 405, HEADER
+@app.errorhandler(HTTPException)
+def handle_exception(e):
+    response = e.get_response()
+    response.data = json.dumps(return_json(status = e.code, message = str(e)))
+    response.headers = HEADER
+    return response
 
 @app.before_request
 def setup_request_context():
