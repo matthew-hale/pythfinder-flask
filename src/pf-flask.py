@@ -525,6 +525,33 @@ def character_equipment():
             abort(400, description = "invalid post data")
     return json.dumps(out), out["status"], HEADER
 
+@bp.route("/character/equipment/<name>", methods = ["GET", "PATCH", "DELETE"])
+def character_equipment_specific(name):
+    item_list = g.c.get_item(name = name, name_search_type = "absolute")
+    if not item_list:
+        abort(404, description = "item not found with name '{}'".format(name))
+    item = item_list[0]
+    if request.method == "GET":
+        out = return_json(data = item)
+    elif request.method == "PATCH":
+        patch_data = request.get_json()
+        if patch_data:
+            try:
+                data = g.c.update_item(name = name, data = patch_data)
+                out = return_json(data = data)
+            except ValueError as err:
+                abort(400, description = "pythfinder error: {}".format(err))
+        else:
+            abort(400, description = "invalid post data")
+        out = return_json(data = data)
+    elif request.method == "DELETE":
+        try:
+            data = g.c.delete_element(name = name, type_ = "equipment")
+            out = return_json(data = data)
+        except ValueError as err:
+            abort(400, description = "pythfinder error: {}".format(err))
+    return json.dumps(out), out["status"], HEADER
+
 @bp.route("/character/abilities", methods = HTTP_METHODS)
 def character_abilities():
     if request.method == "GET":
