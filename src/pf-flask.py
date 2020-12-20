@@ -553,30 +553,46 @@ def character_equipment_specific(uuid):
             return "", 204, HEADER
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/abilities", methods = HTTP_METHODS)
+@bp.route("/character/abilities", methods = ["GET"])
 def character_abilities():
+    name = request.args.get("name").split(",") if request.args.get("name") else []
+    name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else ""
+    base = request.args.get("base") if request.args.get("base") else {}
+    if base:
+        base = json.loads(str(request.args.get("base")).replace("'", '"')) 
+    misc = request.args.get("misc") if request.args.get("misc") else {}
+    if misc:
+        misc = json.loads(str(request.args.get("misc")).replace("'", '"')) 
+    get_data = {
+        "name": name,
+        "name_search_type": name_search_type,
+        "base": base,
+        "misc": misc
+    }
+    try:
+        data = g.c.get_ability(data = get_data)
+        out = return_json(data = data)
+    except (KeyError, ValueError) as err:
+        abort(400, description = "pythfinder error: {}".format(err))
+    return json.dumps(out), out["status"], HEADER
+
+@bp.route("/character/abilities/<name>", methods = ["GET", "PATCH"])
+def character_abilities_specific(name):
+    ability = g.c.get_ability(name = name, name_search_type = "absolute") 
+    if not ability:
+        abort(404, description = "ability not found with name '{}'".format(name))
     if request.method == "GET":
-        name = request.args.get("name").split(",") if request.args.get("name") else []
-        name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else ""
-        base = request.args.get("base") if request.args.get("base") else {}
-        if base:
-            base = json.loads(str(request.args.get("base")).replace("'", '"')) 
-        misc = request.args.get("misc") if request.args.get("misc") else {}
-        if misc:
-            misc = json.loads(str(request.args.get("misc")).replace("'", '"')) 
-        get_data = {
-            "name": name,
-            "name_search_type": name_search_type,
-            "base": base,
-            "misc": misc
-        }
-        try:
-            data = g.c.get_ability(data = get_data)
-            out = return_json(data = data)
-        except (KeyError, ValueError) as err:
-            message = "pythfinder error: {}".format(err)
-            status = 400
-            out = return_json(message = message, status = status)
+        out = return_json(data = ability)
+    elif request.method == "PATCH":
+        patch_data = request.get_json()
+        if patch_data:
+            try:
+                data = g.c.update_ability(name = name, data = patch_data)
+                out = return_json(data = data)
+            except ValueError as err:
+                abort(400, description = "pythfinder error: {}".format(err))
+        else:
+            abort(400, description = "invalid patch data")
     return json.dumps(out), out["status"], HEADER
 
 @bp.route("/character/saving_throws", methods = HTTP_METHODS)
