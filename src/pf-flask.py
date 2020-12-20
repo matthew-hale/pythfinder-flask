@@ -517,8 +517,8 @@ def character_equipment():
         post_data = request.get_json()
         if post_data:
             try:
-                item = g.c.add_item(data = post_data, status = 201)
-                out = return_json(data = item)
+                item = g.c.add_item(data = post_data)
+                out = return_json(data = item, status = 201)
             except ValueError as err:
                 abort(400, description = "pythfinder error: {}".format(err))
         else:
