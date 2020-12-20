@@ -65,26 +65,21 @@ def cache_character(response):
 def index():
     abort(404, description = "browse to /api/v0/character to view character json")
 
-@bp.route("/set_character", methods = ["PUT"])
-def set_character():
-    print("test")
-    new_c = request.get_json()
-    print(new_c)
-    if new_c:
-        new_c_character = pf.Character(data = new_c)
-        new_c_json = new_c_character.getJson()
-        r.set(session["id"], new_c_json)
-        g.c = pf.Character(data = json.loads(r.get(session["id"])))
-        message = "OK"
-        out = return_json(message = message)
-    else:
-        abort(400, description = "invalid character data or content type")
-    return json.dumps(out), out["status"], HEADER
-
-@bp.route("/character")
+@bp.route("/character", methods = ["GET", "PUT"])
 def character():
-    data = json.loads(g.c.getJson())
-    out = return_json(data = data)
+    if request.method == "GET":
+        data = json.loads(g.c.getJson())
+        out = return_json(data = data)
+    elif request.method == "PUT":
+        new_c = request.get_json()
+        if new_c:
+            new_c_character = pf.Character(data = new_c)
+            new_c_json = new_c_character.getJson()
+            r.set(session["id"], new_c_json)
+            g.c = pf.Character(data = json.loads(r.get(session["id"])))
+            return "", 204, HEADER
+        else:
+            abort(400, description = "invalid character data or content type")
     return json.dumps(out), out["status"], HEADER
 
 @bp.route("/character/name", methods = ["GET", "PUT"])
