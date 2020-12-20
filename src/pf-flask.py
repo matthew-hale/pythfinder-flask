@@ -542,7 +542,7 @@ def character_equipment_specific(uuid):
             except ValueError as err:
                 abort(400, description = "pythfinder error: {}".format(err))
         else:
-            abort(400, description = "invalid post data")
+            abort(400, description = "invalid patch data")
         out = return_json(data = data)
     elif request.method == "DELETE":
         try:
