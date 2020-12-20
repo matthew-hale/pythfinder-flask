@@ -525,11 +525,11 @@ def character_equipment():
             abort(400, description = "invalid post data")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/equipment/<name>", methods = ["GET", "PATCH", "DELETE"])
-def character_equipment_specific(name):
-    item_list = g.c.get_item(name = name, name_search_type = "absolute")
+@bp.route("/character/equipment/<uuid>", methods = ["GET", "PATCH", "DELETE"])
+def character_equipment_specific(uuid):
+    item_list = g.c.get_item(uuid = uuid)
     if not item_list:
-        abort(404, description = "item not found with name '{}'".format(name))
+        abort(404, description = "item not found with uuid '{}'".format(uuid))
     item = item_list[0]
     if request.method == "GET":
         out = return_json(data = item)
@@ -537,7 +537,7 @@ def character_equipment_specific(name):
         patch_data = request.get_json()
         if patch_data:
             try:
-                data = g.c.update_item(name = name, data = patch_data)
+                data = g.c.update_item(uuid = uuid, data = patch_data)
                 out = return_json(data = data)
             except ValueError as err:
                 abort(400, description = "pythfinder error: {}".format(err))
@@ -546,10 +546,11 @@ def character_equipment_specific(name):
         out = return_json(data = data)
     elif request.method == "DELETE":
         try:
-            data = g.c.delete_element(name = name, type_ = "equipment")
-            out = return_json(data = data)
+            g.c.delete_item(uuid = uuid)
         except ValueError as err:
             abort(400, description = "pythfinder error: {}".format(err))
+        else:
+            return "", 204, HEADER
     return json.dumps(out), out["status"], HEADER
 
 @bp.route("/character/abilities", methods = HTTP_METHODS)
