@@ -482,6 +482,7 @@ def character_hp():
 def character_equipment():
     if request.method == "GET":
         name = request.args.get("name").split(",") if request.args.get("name") else []
+        uuid = request.args.get("uuid") if request.args.get("uuid") else []
         name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else ""
         weight = request.args.get("weight") if request.args.get("weight") else {}
         if weight:
@@ -495,6 +496,7 @@ def character_equipment():
         notes = request.args.get("notes").split(",") if request.args.get("notes") else []
         get_data = {
             "name": name,
+            "uuid": uuid,
             "name_search_type": name_search_type,
             "weight": weight,
             "count": count,
