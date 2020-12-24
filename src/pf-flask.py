@@ -504,16 +504,17 @@ def character_equipment():
             "notes": notes
         }
         try:
-            data = g.c.get_item(data = get_data)
-            out = return_json(data = data)
+            data = g.c.get_equipment(data = get_data)
+            out_list = [d.__dict__ for d in data]
+            out = return_json(data = out_list)
         except (KeyError, ValueError) as err:
             abort(400, description = "pythfinder error: {}".format(err))
     elif request.method == "POST":
         post_data = request.get_json()
         if post_data:
             try:
-                item = g.c.add_item(data = post_data)
-                out = return_json(data = item, status = 201)
+                item = g.c.add_equipment(data = post_data)
+                out = return_json(data = item.__dict__, status = 201)
             except ValueError as err:
                 abort(400, description = "pythfinder error: {}".format(err))
         else:
@@ -522,23 +523,22 @@ def character_equipment():
 
 @bp.route("/character/equipment/<uuid>", methods = ["GET", "PATCH", "DELETE"])
 def character_equipment_specific(uuid):
-    item_list = g.c.get_item(uuid = uuid)
+    item_list = g.c.get_equipment(uuid = uuid)
     if not item_list:
         abort(404, description = "item not found with uuid '{}'".format(uuid))
     item = item_list[0]
     if request.method == "GET":
-        out = return_json(data = item)
+        out = return_json(data = item.__dict__)
     elif request.method == "PATCH":
         patch_data = request.get_json()
         if patch_data:
             try:
-                data = g.c.update_item(uuid = uuid, data = patch_data)
-                out = return_json(data = data)
+                data = item.update(data = patch_data)
+                out = return_json(data = data.__dict__)
             except ValueError as err:
                 abort(400, description = "pythfinder error: {}".format(err))
         else:
             abort(400, description = "invalid patch data")
-        out = return_json(data = data)
     elif request.method == "DELETE":
         try:
             g.c.delete_item(uuid = uuid)
