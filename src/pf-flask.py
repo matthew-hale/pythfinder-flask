@@ -567,25 +567,27 @@ def character_abilities():
         "misc": misc
     }
     try:
-        data = g.c.get_ability(data = get_data)
-        out = return_json(data = data)
+        data = g.c.get_abilities(data = get_data)
+        out_list = [d.get_dict() for d in data]
+        out = return_json(data = out_list)
     except (KeyError, ValueError) as err:
         abort(400, description = "pythfinder error: {}".format(err))
     return json.dumps(out), out["status"], HEADER
 
 @bp.route("/character/abilities/<name>", methods = ["GET", "PATCH"])
 def character_abilities_specific(name):
-    ability = g.c.get_ability(name = name, name_search_type = "absolute") 
-    if not ability:
+    ability_list = g.c.get_abilities(name = name, name_search_type = "absolute") 
+    if not ability_list:
         abort(404, description = "ability not found with name '{}'".format(name))
+    ability = ability_list[0]
     if request.method == "GET":
-        out = return_json(data = ability)
+        out = return_json(data = ability.get_dict())
     elif request.method == "PATCH":
         patch_data = request.get_json()
         if patch_data:
             try:
-                data = g.c.update_ability(name = name, data = patch_data)
-                out = return_json(data = data)
+                data = ability.update(data = patch_data)
+                out = return_json(data = data.get_dict())
             except ValueError as err:
                 abort(400, description = "pythfinder error: {}".format(err))
         else:
