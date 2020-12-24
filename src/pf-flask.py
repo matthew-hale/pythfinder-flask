@@ -190,22 +190,22 @@ def character_CMD():
             abort(400, description = "improper data format: JSON must contain a 'CMD' key.")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/initiativeMods", methods = ["GET", "PUT"])
-def character_initiativeMods():
+@bp.route("/character/initiative_mods", methods = ["GET", "PUT"])
+def character_initiative_mods():
     if request.method == "GET":
         data = {
-            "initiativeMods": g.c.initiativeMods
+            "initiative_mods": g.c.initiative_mods
         }
         out = return_json(data = data)
     elif request.method == "PUT":
-        initiativeMods = request.get_json()
-        keys = initiativeMods.keys()
-        if initiativeMods and "initiativeMods" in keys:
-            data = initiativeMods
-            g.c.initiativeMods = initiativeMods["initiativeMods"]
+        initiative_mods = request.get_json()
+        keys = initiative_mods.keys()
+        if initiative_mods and "initiative_mods" in keys:
+            data = initiative_mods
+            g.c.initiative_mods = initiative_mods["initiative_mods"]
             out = return_json(data = data)
         else:
-            abort(400, description = "improper data format: JSON must contain a 'initiativeMods' key.")
+            abort(400, description = "improper data format: JSON must contain a 'initiative_mods' key.")
     return json.dumps(out), out["status"], HEADER
 
 @bp.route("/character/alignment", methods = ["GET", "PUT"])
@@ -370,40 +370,40 @@ def character_languages():
             abort(400, description = "improper data format: JSON must contain a 'languages' key.")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/spellsPerDay", methods = ["GET", "PUT"])
-def character_spellsPerDay():
+@bp.route("/character/spells_per_day", methods = ["GET", "PUT"])
+def character_spells_per_day():
     if request.method == "GET":
         data = {
-            "spellsPerDay": g.c.spellsPerDay
+            "spells_per_day": g.c.spells_per_day
         }
         out = return_json(data = data)
     elif request.method == "PUT":
-        spellsPerDay = request.get_json()
-        keys = spellsPerDay.keys()
-        if spellsPerDay and "spellsPerDay" in keys:
-            data = spellsPerDay
-            g.c.spellsPerDay = spellsPerDay["spellsPerDay"]
+        spells_per_day = request.get_json()
+        keys = spells_per_day.keys()
+        if spells_per_day and "spells_per_day" in keys:
+            data = spells_per_day
+            g.c.spells_per_day = spells_per_day["spells_per_day"]
             out = return_json(data = data)
         else:
-            abort(400, description = "improper data format: JSON must contain a 'spellsPerDay' key.")
+            abort(400, description = "improper data format: JSON must contain a 'spells_per_day' key.")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/baseAttackBonus", methods = ["GET", "PUT"])
-def character_baseAttackBonus():
+@bp.route("/character/base_attack_bonus", methods = ["GET", "PUT"])
+def character_base_attack_bonus():
     if request.method == "GET":
         data = {
-            "baseAttackBonus": g.c.baseAttackBonus
+            "base_attack_bonus": g.c.base_attack_bonus
         }
         out = return_json(data = data)
     elif request.method == "PUT":
-        baseAttackBonus = request.get_json()
-        keys = baseAttackBonus.keys()
-        if baseAttackBonus and "baseAttackBonus" in keys:
-            data = baseAttackBonus
-            g.c.baseAttackBonus = baseAttackBonus["baseAttackBonus"]
+        base_attack_bonus = request.get_json()
+        keys = base_attack_bonus.keys()
+        if base_attack_bonus and "base_attack_bonus" in keys:
+            data = base_attack_bonus
+            g.c.base_attack_bonus = base_attack_bonus["base_attack_bonus"]
             out = return_json(data = data)
         else:
-            abort(400, description = "improper data format: JSON must contain a 'baseAttackBonus' key.")
+            abort(400, description = "improper data format: JSON must contain a 'base_attack_bonus' key.")
     return json.dumps(out), out["status"], HEADER
 
 @bp.route("/character/gold", methods = ["GET", "PUT"])
