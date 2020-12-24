@@ -49,14 +49,14 @@ def setup_request_context():
         session["id"] = str(uuid())
     if not r.exists(session["id"]):
         blank_character = pf.Character()
-        raw_json = blank_character.getJson()
+        raw_json = blank_character.get_json()
         r.set(session["id"], raw_json)
     c_data = json.loads(r.get(session["id"]))
     g.c = pf.Character(data = c_data)
 
 @app.after_request
 def cache_character(response):
-    c_data = g.c.getJson()
+    c_data = g.c.get_json()
     r.set(session["id"], c_data)
     r.expire(session["id"], TIMEOUT)
     return response
@@ -68,13 +68,13 @@ def index():
 @bp.route("/character", methods = ["GET", "PUT"])
 def character():
     if request.method == "GET":
-        data = json.loads(g.c.getJson())
+        data = json.loads(g.c.get_json())
         out = return_json(data = data)
     elif request.method == "PUT":
         new_c = request.get_json()
         if new_c:
             new_c_character = pf.Character(data = new_c)
-            new_c_json = new_c_character.getJson()
+            new_c_json = new_c_character.get_json()
             r.set(session["id"], new_c_json)
             g.c = pf.Character(data = json.loads(r.get(session["id"])))
             return "", 204, HEADER
