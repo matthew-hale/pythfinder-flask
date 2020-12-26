@@ -636,8 +636,9 @@ def character_classes():
             "level": level
         }
         try:
-            data = g.c.get_class(data = get_data)
-            out = return_json(data = data)
+            data = g.c.get_classes(data = get_data)
+            out_list = [d.__dict__ for d in data]
+            out = return_json(data = out_list)
         except (KeyError, ValueError) as err:
             message = "pythfinder error: {}".format(err)
             status = 400
