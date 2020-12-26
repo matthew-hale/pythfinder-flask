@@ -740,70 +740,184 @@ def character_classes_specific(uuid):
             return "", 204, HEADER
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/feats", methods = HTTP_METHODS)
+@bp.route("/character/feats", methods = ["GET", "POST"])
 def character_feats():
     if request.method == "GET":
         name = request.args.get("name").split(",") if request.args.get("name") else []
+        uuid = request.args.get("uuid").split(",") if request.args.get("uuid") else []
         name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else ""
         description = request.args.get("description").split(",") if request.args.get("description") else []
         notes = request.args.get("notes").split(",") if request.args.get("notes") else []
         get_data = {
             "name": name,
+            "uuid": uuid,
             "name_search_type": name_search_type,
             "description": description,
             "notes": notes
         }
         try:
-            data = g.c.get_feat(data = get_data)
-            out = return_json(data = data)
+            data = g.c.get_feats(data = get_data)
+            out_list = [d.__dict__ for d in data]
+            out = return_json(data = out_list)
         except (KeyError, ValueError) as err:
-            message = "pythfinder error: {}".format(err)
-            status = 400
-            out = return_json(message = message, status = status)
+            abort(400, description = "pythfinder error: {}".format(err))
+    elif request.method == "POST":
+        post_data = request.get_json()
+        if post_data or post_data == {}:
+            try:
+                data = g.c.add_feat(data = post_data)
+                out = return_json(data = data.__dict__)
+            except ValueError as err:
+                abort(400, description = "pythfinder error: {}".format(err))
+        else:
+            abort(400, description = "invalid post data")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/traits", methods = HTTP_METHODS)
+@bp.route("/character/feats/<uuid>", methods = ["GET", "PATCH", "DELETE"])
+def character_feats_specific(uuid):
+    feat_list = g.c.get_feats(uuid = uuid)
+    if not feat_list:
+        abort(404, description = "feat not found with uuid '{}'".format(uuid))
+    feat = feat_list[0]
+    if request.method == "GET":
+        out = return_json(data = feat.__dict__)
+    elif request.method == "PATCH":
+        patch_data = request.get_json()
+        if patch_data:
+            try:
+                data = feat.update(data = patch_data)
+                out = return_json(data = data.__dict__)
+            except ValueError as err:
+                abort(400, description = "pythfinder error: {}".format(err))
+        else:
+            abort(400, description = "invalid patch data")
+    elif request.method == "DELETE":
+        try:
+            g.c.delete_feat(feat)
+        except ValueError as err:
+            abort(400, description = "pythfinder error: {}".format(err))
+        else:
+            return "", 204, HEADER
+    return json.dumps(out), out["status"], HEADER
+
+@bp.route("/character/traits", methods = ["GET", "POST"])
 def character_traits():
     if request.method == "GET":
         name = request.args.get("name").split(",") if request.args.get("name") else []
+        uuid = request.args.get("uuid").split(",") if request.args.get("uuid") else []
         name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else ""
         description = request.args.get("description").split(",") if request.args.get("description") else []
         notes = request.args.get("notes").split(",") if request.args.get("notes") else []
         get_data = {
             "name": name,
+            "uuid": uuid,
             "name_search_type": name_search_type,
             "description": description,
             "notes": notes
         }
         try:
-            data = g.c.get_trait(data = get_data)
-            out = return_json(data = data)
+            data = g.c.get_traits(data = get_data)
+            out_list = [d.__dict__ for d in data]
+            out = return_json(data = out_list)
         except (KeyError, ValueError) as err:
-            message = "pythfinder error: {}".format(err)
-            status = 400
-            out = return_json(message = message, status = status)
+            abort(400, description = "pythfinder error: {}".format(err))
+    elif request.method == "POST":
+        post_data = request.get_json()
+        if post_data or post_data == {}:
+            try:
+                data = g.c.add_trait(data = post_data)
+                out = return_json(data = data.__dict__)
+            except ValueError as err:
+                abort(400, description = "pythfinder error: {}".format(err))
+        else:
+            abort(400, description = "invalid post data")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/special", methods = HTTP_METHODS)
-def character_special():
+@bp.route("/character/traits/<uuid>", methods = ["GET", "PATCH", "DELETE"])
+def character_traits_specific(uuid):
+    trait_list = g.c.get_traits(uuid = uuid)
+    if not trait_list:
+        abort(404, description = "trait not found with uuid '{}'".format(uuid))
+    trait = trait_list[0]
+    if request.method == "GET":
+        out = return_json(data = trait.__dict__)
+    elif request.method == "PATCH":
+        patch_data = request.get_json()
+        if patch_data:
+            try:
+                data = trait.update(data = patch_data)
+                out = return_json(data = data.__dict__)
+            except ValueError as err:
+                abort(400, description = "pythfinder error: {}".format(err))
+        else:
+            abort(400, description = "invalid patch data")
+    elif request.method == "DELETE":
+        try:
+            g.c.delete_trait(trait)
+        except ValueError as err:
+            abort(400, description = "pythfinder error: {}".format(err))
+        else:
+            return "", 204, HEADER
+    return json.dumps(out), out["status"], HEADER
+
+@bp.route("/character/specials", methods = ["GET", "POST"])
+def character_specials():
     if request.method == "GET":
         name = request.args.get("name").split(",") if request.args.get("name") else []
+        uuid = request.args.get("uuid").split(",") if request.args.get("uuid") else []
         name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else ""
         description = request.args.get("description").split(",") if request.args.get("description") else []
         notes = request.args.get("notes").split(",") if request.args.get("notes") else []
         get_data = {
             "name": name,
+            "uuid": uuid,
             "name_search_type": name_search_type,
             "description": description,
             "notes": notes
         }
         try:
-            data = g.c.get_special(data = get_data)
-            out = return_json(data = data)
+            data = g.c.get_specials(data = get_data)
+            out_list = [d.__dict__ for d in data]
+            out = return_json(data = out_list)
         except (KeyError, ValueError) as err:
-            message = "pythfinder error: {}".format(err)
-            status = 400
-            out = return_json(message = message, status = status)
+            abort(400, description = "pythfinder error: {}".format(err))
+    elif request.method == "POST":
+        post_data = request.get_json()
+        if post_data or post_data == {}:
+            try:
+                data = g.c.add_special(data = post_data)
+                out = return_json(data = data.__dict__)
+            except ValueError as err:
+                abort(400, description = "pythfinder error: {}".format(err))
+        else:
+            abort(400, description = "invalid post data")
+    return json.dumps(out), out["status"], HEADER
+
+@bp.route("/character/specials/<uuid>", methods = ["GET", "PATCH", "DELETE"])
+def character_specials_specific(uuid):
+    special_list = g.c.get_specials(uuid = uuid)
+    if not special_list:
+        abort(404, description = "special not found with uuid '{}'".format(uuid))
+    special = special_list[0]
+    if request.method == "GET":
+        out = return_json(data = special.__dict__)
+    elif request.method == "PATCH":
+        patch_data = request.get_json()
+        if patch_data:
+            try:
+                data = special.update(data = patch_data)
+                out = return_json(data = data.__dict__)
+            except ValueError as err:
+                abort(400, description = "pythfinder error: {}".format(err))
+        else:
+            abort(400, description = "invalid patch data")
+    elif request.method == "DELETE":
+        try:
+            g.c.delete_special(special)
+        except ValueError as err:
+            abort(400, description = "pythfinder error: {}".format(err))
+        else:
+            return "", 204, HEADER
     return json.dumps(out), out["status"], HEADER
 
 @bp.route("/character/skills", methods = HTTP_METHODS)
