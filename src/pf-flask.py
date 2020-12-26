@@ -61,6 +61,10 @@ def cache_character(response):
     r.expire(session["id"], TIMEOUT)
     return response
 
+@app.route("/favicon.ico")
+def favicon():
+    return "", 204, HEADER
+
 @app.route("/")
 def index():
     abort(404, description = "browse to /api/v0/character to view character json")
