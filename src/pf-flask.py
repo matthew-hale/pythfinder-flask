@@ -428,6 +428,42 @@ def character_spells_per_day():
             abort(400, description = "improper data format: JSON must contain a 'spells_per_day' key.")
     return json.dumps(out), out["status"], HEADER
 
+@bp.route("/character/spells_known", methods = ["GET", "PUT"])
+def character_spells_known():
+    if request.method == "GET":
+        data = {
+            "spells_known": g.c.spells_known
+        }
+        out = return_json(data = data)
+    elif request.method == "PUT":
+        spells_known = request.get_json()
+        keys = spells_known.keys()
+        if spells_known and "spells_known" in keys:
+            data = spells_known
+            g.c.spells_known = spells_known["spells_known"]
+            out = return_json(data = data)
+        else:
+            abort(400, description = "improper data format: JSON must contain a 'spells_known' key.")
+    return json.dumps(out), out["status"], HEADER
+
+@bp.route("/character/bonus_spells", methods = ["GET", "PUT"])
+def character_bonus_spells():
+    if request.method == "GET":
+        data = {
+            "bonus_spells": g.c.bonus_spells
+        }
+        out = return_json(data = data)
+    elif request.method == "PUT":
+        bonus_spells = request.get_json()
+        keys = bonus_spells.keys()
+        if bonus_spells and "bonus_spells" in keys:
+            data = bonus_spells
+            g.c.bonus_spells = bonus_spells["bonus_spells"]
+            out = return_json(data = data)
+        else:
+            abort(400, description = "improper data format: JSON must contain a 'bonus_spells' key.")
+    return json.dumps(out), out["status"], HEADER
+
 @bp.route("/character/base_attack_bonus", methods = ["GET", "PUT"])
 def character_base_attack_bonus():
     if request.method == "GET":
