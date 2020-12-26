@@ -583,7 +583,7 @@ def character_equipment_specific(uuid):
             abort(400, description = "invalid patch data")
     elif request.method == "DELETE":
         try:
-            g.c.delete_item(uuid = uuid)
+            g.c.delete_equipment(item)
         except ValueError as err:
             abort(400, description = "pythfinder error: {}".format(err))
         else:
