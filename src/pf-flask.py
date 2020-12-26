@@ -140,6 +140,42 @@ def character_deity():
             abort(400, description = "improper data format: JSON must contain a 'deity' key.")
     return json.dumps(out), out["status"], HEADER
 
+@bp.route("/character/notes", methods = ["GET", "PUT"])
+def character_notes():
+    if request.method == "GET":
+        data = {
+            "notes": g.c.notes
+        }
+        out = return_json(data = data)
+    elif request.method == "PUT":
+        notes = request.get_json()
+        keys = notes.keys()
+        if notes and "notes" in keys:
+            data = notes
+            g.c.notes = notes["notes"]
+            out = return_json(data = data)
+        else:
+            abort(400, description = "improper data format: JSON must contain a 'notes' key.")
+    return json.dumps(out), out["status"], HEADER
+
+@bp.route("/character/gender", methods = ["GET", "PUT"])
+def character_gender():
+    if request.method == "GET":
+        data = {
+            "gender": g.c.gender
+        }
+        out = return_json(data = data)
+    elif request.method == "PUT":
+        gender = request.get_json()
+        keys = gender.keys()
+        if gender and "gender" in keys:
+            data = gender
+            g.c.gender = gender["gender"]
+            out = return_json(data = data)
+        else:
+            abort(400, description = "improper data format: JSON must contain a 'gender' key.")
+    return json.dumps(out), out["status"], HEADER
+
 @bp.route("/character/homeland", methods = ["GET", "PUT"])
 def character_homeland():
     if request.method == "GET":
