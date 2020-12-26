@@ -634,30 +634,50 @@ def character_abilities_specific(name):
             abort(400, description = "invalid patch data")
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/saving_throws", methods = HTTP_METHODS)
+@bp.route("/character/saving_throws", methods = ["GET"])
 def character_saving_throws():
+    name = request.args.get("name").split(",") if request.args.get("name") else []
+    name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else ""
+    base = request.args.get("base") if request.args.get("base") else {}
+    if base:
+        base = json.loads(str(request.args.get("base")).replace("'", '"')) 
+    misc = request.args.get("misc") if request.args.get("misc") else {}
+    if misc:
+        misc = json.loads(str(request.args.get("misc")).replace("'", '"')) 
+    get_data = {
+        "name": name,
+        "name_search_type": name_search_type,
+        "base": base,
+        "misc": misc
+    }
+    try:
+        data = g.c.get_saving_throws(data = get_data)
+        out_list = [d.get_dict() for d in data]
+        out = return_json(data = out_list)
+    except (KeyError, ValueError) as err:
+        message = "pythfinder error: {}".format(err)
+        status = 400
+        out = return_json(message = message, status = status)
+    return json.dumps(out), out["status"], HEADER
+
+@bp.route("/character/saving_throws/<name>", methods = ["GET", "PATCH"])
+def character_saving_throws_specific(name):
+    saving_throw_list = g.c.get_saving_throws(name = name, name_search_type = "absolute") 
+    if not saving_throw_list:
+        abort(404, description = "saving_throw not found with name '{}'".format(name))
+    saving_throw = saving_throw_list[0]
     if request.method == "GET":
-        name = request.args.get("name").split(",") if request.args.get("name") else []
-        name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else ""
-        base = request.args.get("base") if request.args.get("base") else {}
-        if base:
-            base = json.loads(str(request.args.get("base")).replace("'", '"')) 
-        misc = request.args.get("misc") if request.args.get("misc") else {}
-        if misc:
-            misc = json.loads(str(request.args.get("misc")).replace("'", '"')) 
-        get_data = {
-            "name": name,
-            "name_search_type": name_search_type,
-            "base": base,
-            "misc": misc
-        }
-        try:
-            data = g.c.get_saving_throw(data = get_data)
-            out = return_json(data = data)
-        except (KeyError, ValueError) as err:
-            message = "pythfinder error: {}".format(err)
-            status = 400
-            out = return_json(message = message, status = status)
+        out = return_json(data = saving_throw.get_dict())
+    elif request.method == "PATCH":
+        patch_data = request.get_json()
+        if patch_data:
+            try:
+                data = saving_throw.update(data = patch_data)
+                out = return_json(data = data.get_dict())
+            except ValueError as err:
+                abort(400, description = "pythfinder error: {}".format(err))
+        else:
+            abort(400, description = "invalid patch data")
     return json.dumps(out), out["status"], HEADER
 
 @bp.route("/character/classes", methods = HTTP_METHODS)
