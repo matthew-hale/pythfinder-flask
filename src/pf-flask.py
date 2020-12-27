@@ -1140,46 +1140,84 @@ def character_armor():
             out = return_json(message = message, status = status)
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/attacks", methods = HTTP_METHODS)
+@bp.route("/character/attacks", methods = ["GET", "POST"])
 def character_attacks():
     if request.method == "GET":
         name = request.args.get("name").split(",") if request.args.get("name") else []
+        uuid = request.args.get("uuid").split(",") if request.args.get("uuid") else []
         name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else ""
-        attackType = request.args.get("attackType").split(",") if request.args.get("attackType") else []
-        damageType = request.args.get("damageType").split(",") if request.args.get("damageType") else []
+        attack_type = request.args.get("attack_type").split(",") if request.args.get("attack_type") else []
+        damage_type = request.args.get("damage_type").split(",") if request.args.get("damage_type") else []
         attack_mod = request.args.get("attack_mod").split(",") if request.args.get("attack_mod") else []
         damage_mod = request.args.get("damage_mod").split(",") if request.args.get("damage_mod") else []
         damage = request.args.get("damage").split(",") if request.args.get("damage") else []
-        critRoll = request.args.get("critRoll") if request.args.get("critRoll") else {}
-        if critRoll:
-            critRoll = json.loads(str(request.args.get("critRoll")).replace("'", '"')) 
-        critMulti = request.args.get("critMulti") if request.args.get("critMulti") else {}
-        if critMulti:
-            critMulti = json.loads(str(request.args.get("critMulti")).replace("'", '"')) 
+        crit_roll = request.args.get("crit_roll") if request.args.get("crit_roll") else {}
+        if crit_roll:
+            crit_roll = json.loads(str(request.args.get("crit_roll")).replace("'", '"')) 
+        crit_multi = request.args.get("crit_multi") if request.args.get("crit_multi") else {}
+        if crit_multi:
+            crit_multi = json.loads(str(request.args.get("crit_multi")).replace("'", '"')) 
         range_ = request.args.get("range") if request.args.get("range") else {}
         if range_:
             range_ = json.loads(str(request.args.get("range")).replace("'", '"')) 
         notes = request.args.get("notes").split(",") if request.args.get("notes") else []
         get_data = {
             "name": name,
+            "uuid": uuid,
             "name_search_type": name_search_type,
-            "attackType": attackType,
-            "damageType": damageType,
+            "attack_type": attack_type,
+            "damage_type": damage_type,
             "attack_mod": attack_mod,
             "damage_mod": damage_mod,
             "damage": damage,
-            "critRoll": critRoll,
-            "critMulti": critMulti,
+            "crit_roll": crit_roll,
+            "crit_multi": crit_multi,
             "range": range_,
             "notes": notes
         }
         try:
-            data = g.c.get_attack(data = get_data)
-            out = return_json(data = data)
+            data = g.c.get_attacks(data = get_data)
+            out_list = [d.get_dict() for d in data]
+            out = return_json(data = out_list)
         except (KeyError, ValueError) as err:
-            message = "pythfinder error: {}".format(err)
-            status = 400
-            out = return_json(message = message, status = status)
+            abort(400, description = "pythfinder error: {}".format(err))
+    elif request.method == "POST":
+        post_data = request.get_json()
+        if post_data or post_data == {}:
+            try:
+                data = g.c.add_attack(data = post_data)
+                out = return_json(data = data.get_dict())
+            except ValueError as err:
+                abort(400, description = "pythfinder error: {}".format(err))
+        else:
+            abort(400, description = "invalid post data")
+    return json.dumps(out), out["status"], HEADER
+
+@bp.route("/character/attacks/<uuid>", methods = ["GET", "PATCH", "DELETE"])
+def character_attacks_specific(uuid):
+    attack_list = g.c.get_attacks(uuid = uuid)
+    if not attack_list:
+        abort(404, description = "attack not found with uuid '{}'".format(uuid))
+    attack = attack_list[0]
+    if request.method == "GET":
+        out = return_json(data = attack.get_dict())
+    elif request.method == "PATCH":
+        patch_data = request.get_json()
+        if patch_data:
+            try:
+                data = attack.update(data = patch_data)
+                out = return_json(data = data.get_dict())
+            except ValueError as err:
+                abort(400, description = "pythfinder error: {}".format(err))
+        else:
+            abort(400, description = "invalid patch data")
+    elif request.method == "DELETE":
+        try:
+            g.c.delete_attack(attack)
+        except ValueError as err:
+            abort(400, description = "pythfinder error: {}".format(err))
+        else:
+            return "", 204, HEADER
     return json.dumps(out), out["status"], HEADER
 
 app.register_blueprint(bp)
