@@ -1104,10 +1104,11 @@ def character_spells_specific(uuid):
             return "", 204, HEADER
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/armor", methods = HTTP_METHODS)
+@bp.route("/character/armor", methods = ["GET", "POST"])
 def character_armor():
     if request.method == "GET":
         name = request.args.get("name").split(",") if request.args.get("name") else []
+        uuid = request.args.get("uuid").split(",") if request.args.get("uuid") else []
         name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else ""
         acBonus = request.args.get("acBonus") if request.args.get("acBonus") else {}
         if acBonus:
@@ -1124,6 +1125,7 @@ def character_armor():
         type_ = request.args.get("type").split(",") if request.args.get("type") else []
         get_data = {
             "name": name,
+            "uuid": uuid,
             "name_search_type": name_search_type,
             "acBonus": acBonus,
             "acPenalty": acPenalty,
@@ -1133,11 +1135,47 @@ def character_armor():
         }
         try:
             data = g.c.get_armor(data = get_data)
-            out = return_json(data = data)
+            out_list = [d.__dict__ for d in data]
+            out = return_json(data = out_list)
         except (KeyError, ValueError) as err:
-            message = "pythfinder error: {}".format(err)
-            status = 400
-            out = return_json(message = message, status = status)
+            abort(400, description = "pythfinder error: {}".format(err))
+    elif request.method == "POST":
+        post_data = request.get_json()
+        if post_data or post_data == {}:
+            try:
+                data = g.c.add_armor(data = post_data)
+                out = return_json(data = data.__dict__)
+            except ValueError as err:
+                abort(400, description = "pythfinder error: {}".format(err))
+        else:
+            abort(400, description = "invalid post data")
+    return json.dumps(out), out["status"], HEADER
+
+@bp.route("/character/armor/<uuid>", methods = ["GET", "PATCH", "DELETE"])
+def character_armor_specific(uuid):
+    armor_list = g.c.get_armor(uuid = uuid)
+    if not armor_list:
+        abort(404, description = "armor not found with uuid '{}'".format(uuid))
+    armor = armor_list[0]
+    if request.method == "GET":
+        out = return_json(data = armor.__dict__)
+    elif request.method == "PATCH":
+        patch_data = request.get_json()
+        if patch_data:
+            try:
+                data = armor.update(data = patch_data)
+                out = return_json(data = data.__dict__)
+            except ValueError as err:
+                abort(400, description = "pythfinder error: {}".format(err))
+        else:
+            abort(400, description = "invalid patch data")
+    elif request.method == "DELETE":
+        try:
+            g.c.delete_armor(armor)
+        except ValueError as err:
+            abort(400, description = "pythfinder error: {}".format(err))
+        else:
+            return "", 204, HEADER
     return json.dumps(out), out["status"], HEADER
 
 @bp.route("/character/attacks", methods = ["GET", "POST"])
