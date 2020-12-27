@@ -633,6 +633,9 @@ def character_abilities():
     base = request.args.get("base") if request.args.get("base") else {}
     if base:
         base = json.loads(str(request.args.get("base")).replace("'", '"')) 
+    modifier = request.args.get("modifier") if request.args.get("modifier") else {}
+    if modifier:
+        modifier = json.loads(str(request.args.get("modifier")).replace("'", '"')) 
     misc = request.args.get("misc") if request.args.get("misc") else {}
     if misc:
         misc = json.loads(str(request.args.get("misc")).replace("'", '"')) 
@@ -640,6 +643,7 @@ def character_abilities():
         "name": name,
         "name_search_type": name_search_type,
         "base": base,
+        "modifier": modifier,
         "misc": misc
     }
     try:
