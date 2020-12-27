@@ -956,44 +956,82 @@ def character_specials_specific(uuid):
             return "", 204, HEADER
     return json.dumps(out), out["status"], HEADER
 
-@bp.route("/character/skills", methods = HTTP_METHODS)
+@bp.route("/character/skills", methods = ["GET", "POST"])
 def character_skills():
     if request.method == "GET":
         name = request.args.get("name").split(",") if request.args.get("name") else []
+        uuid = request.args.get("uuid").split(",") if request.args.get("uuid") else []
         name_search_type = request.args.get("name_search_type") if request.args.get("name_search_type") else ""
         rank = request.args.get("rank") if request.args.get("rank") else {}
         if rank:
             rank = json.loads(str(request.args.get("rank")).replace("'", '"')) 
-        if request.args.get("isClass") == None:
-            isClass = []
+        if request.args.get("is_class") == None:
+            is_class = []
         else:
-            isClass = request.args.get("isClass") == "true"
+            is_class = request.args.get("is_class") == "true"
         mod = request.args.get("mod").split(",") if request.args.get("mod") else []
         notes = request.args.get("notes").split(",") if request.args.get("notes") else []
-        if request.args.get("useUntrained") == None:
-            useUntrained = []
+        if request.args.get("use_untrained") == None:
+            use_untrained = []
         else:
-            useUntrained = request.args.get("useUntrained") == "true"
+            use_untrained = request.args.get("use_untrained") == "true"
         misc = request.args.get("misc") if request.args.get("misc") else {}
         if misc:
             misc = json.loads(str(request.args.get("misc")).replace("'", '"')) 
         get_data = {
             "name": name,
+            "uuid": uuid,
             "name_search_type": name_search_type,
             "rank": rank,
-            "isClass": isClass,
+            "is_class": is_class,
             "mod": mod,
             "notes": notes,
-            "useUntrained": useUntrained,
+            "use_untrained": use_untrained,
             "misc": misc
         }
         try:
-            data = g.c.get_skill(data = get_data)
-            out = return_json(data = data)
+            data = g.c.get_skills(data = get_data)
+            out_list = [d.get_dict() for d in data]
+            out = return_json(data = out_list)
         except (KeyError, ValueError) as err:
-            message = "pythfinder error: {}".format(err)
-            status = 400
-            out = return_json(message = message, status = status)
+            abort(400, description = "pythfinder error: {}".format(err))
+    elif request.method == "POST":
+        post_data = request.get_json()
+        if post_data or post_data == {}:
+            try:
+                data = g.c.add_skill(data = post_data)
+                out = return_json(data = data.__dict__)
+            except ValueError as err:
+                abort(400, description = "pythfinder error: {}".format(err))
+        else:
+            abort(400, description = "invalid post data")
+    return json.dumps(out), out["status"], HEADER
+
+@bp.route("/character/skills/<uuid>", methods = ["GET", "PATCH", "DELETE"])
+def character_skills_specific(uuid):
+    skill_list = g.c.get_skills(uuid = uuid)
+    if not skill_list:
+        abort(404, description = "skill not found with uuid '{}'".format(uuid))
+    skill = skill_list[0]
+    if request.method == "GET":
+        out = return_json(data = skill.get_dict())
+    elif request.method == "PATCH":
+        patch_data = request.get_json()
+        if patch_data:
+            try:
+                data = skill.update(data = patch_data)
+                out = return_json(data = data.get_dict())
+            except ValueError as err:
+                abort(400, description = "pythfinder error: {}".format(err))
+        else:
+            abort(400, description = "invalid patch data")
+    elif request.method == "DELETE":
+        try:
+            g.c.delete_skill(skill)
+        except ValueError as err:
+            abort(400, description = "pythfinder error: {}".format(err))
+        else:
+            return "", 204, HEADER
     return json.dumps(out), out["status"], HEADER
 
 @bp.route("/character/spells", methods = HTTP_METHODS)
